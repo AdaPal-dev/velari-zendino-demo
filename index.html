@@ -3,115 +3,96 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dino — AI asistent pro Zendino</title>
-  <meta name="description" content="Dino odpovídá hostům za vás. 24/7. Rezervace, menu, alergeny — automaticky.">
+  <title>Dino — Asistent Zendina</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            purple: {
-              950: '#1a0830', 900: '#2d1458', 800: '#3b1a73',
-              700: '#4c1d95', 600: '#5b21b6', 500: '#7c3aed',
-              400: '#a78bfa', 300: '#c4b5fd',
-            }
-          }
-        }
-      }
-    }
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-
   <style>
-    *, *::before, *::after { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    * { box-sizing: border-box; }
+
     body {
-      margin: 0; background: #0a0118; color: #f8f5ff;
-      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
-      -webkit-font-smoothing: antialiased; overflow-x: hidden;
+      background: #0a0118;
+      color: #e2d9f3;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      height: 100dvh;
+      overflow: hidden;
     }
 
-    /* Orbs */
-    .orb { position: fixed; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0; opacity: 0.3; }
-    .orb-1 { width: 600px; height: 600px; background: radial-gradient(circle, #7c3aed, transparent 70%); top: -200px; left: -200px; }
-    .orb-2 { width: 500px; height: 500px; background: radial-gradient(circle, #6d28d9, transparent 70%); bottom: -100px; right: -100px; }
-    .orb-3 { width: 300px; height: 300px; background: radial-gradient(circle, #5b21b6, transparent 70%); top: 40%; left: 60%; opacity: 0.15; }
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .orb-1 { width: 420px; height: 420px; background: rgba(124,58,237,0.18); top: -120px; right: 8%; }
+    .orb-2 { width: 320px; height: 320px; background: rgba(139,92,246,0.12); bottom: 5%; left: 3%; }
+    .orb-3 { width: 220px; height: 220px; background: rgba(167,139,250,0.07); top: 45%; right: 28%; }
 
-    /* Glass */
     .glass {
       background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(167,139,250,0.12);
+      border: 1px solid rgba(255,255,255,0.08);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
     }
 
-    /* Dino avatar glow */
-    .dino-glow { animation: avatarPulse 3s ease-in-out infinite; }
-    @keyframes avatarPulse {
-      0%,100% { box-shadow: 0 0 0 2px rgba(124,58,237,0.4), 0 0 16px rgba(124,58,237,0.25); }
-      50%      { box-shadow: 0 0 0 4px rgba(124,58,237,0.15), 0 0 28px rgba(124,58,237,0.4); }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.25; }
+    }
+    .online-dot {
+      width: 8px; height: 8px;
+      background: #22c55e;
+      border-radius: 50%;
+      flex-shrink: 0;
+      animation: pulse-dot 2s ease-in-out infinite;
     }
 
-    /* Online dot */
-    .online-dot { width: 7px; height: 7px; background: #4ade80; border-radius: 50%; box-shadow: 0 0 6px #4ade80; flex-shrink: 0; animation: onlinePulse 2.5s ease-in-out infinite; }
-    @keyframes onlinePulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.55; transform: scale(1.35); } }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .stat-pill { animation: fadeUp 0.5s ease forwards; opacity: 0; }
+    .stat-pill:nth-child(1) { animation-delay: 0.2s; }
+    .stat-pill:nth-child(2) { animation-delay: 0.4s; }
+    .stat-pill:nth-child(3) { animation-delay: 0.6s; }
+    .stat-pill:nth-child(4) { animation-delay: 0.8s; }
 
-    /* Typing dots */
-    .typing-dot { width: 6px; height: 6px; background: #a78bfa; border-radius: 50%; animation: tdot 1.2s infinite ease-in-out; }
-    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes tdot { 0%,60%,100% { transform: translateY(0); opacity: 0.5; } 30% { transform: translateY(-6px); opacity: 1; } }
+    @keyframes msgIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .msg { animation: msgIn 0.22s ease forwards; }
 
-    /* Message slide-in */
-    @keyframes msgIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-    .msg-in { animation: msgIn 0.22s ease-out both; }
+    @keyframes bounce {
+      0%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-5px); }
+    }
+    .tdot { animation: bounce 1.1s infinite ease-in-out; display: inline-block; }
+    .tdot:nth-child(2) { animation-delay: 0.18s; }
+    .tdot:nth-child(3) { animation-delay: 0.36s; }
 
-    /* Pill animation */
-    @keyframes pillIn { from { opacity: 0; transform: translateX(-14px); } to { opacity: 1; transform: translateX(0); } }
+    .chat-body::-webkit-scrollbar { width: 3px; }
+    .chat-body::-webkit-scrollbar-track { background: transparent; }
+    .chat-body::-webkit-scrollbar-thumb { background: rgba(124,58,237,0.3); border-radius: 2px; }
 
-    /* CTA pulse */
-    @keyframes ctaPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(124,58,237,0.5); } 50% { box-shadow: 0 0 0 10px rgba(124,58,237,0); } }
-    .btn-pulse { animation: ctaPulse 2.5s ease-in-out infinite; }
-
-    /* Chip appear */
-    @keyframes chipAppear { from { opacity: 0; transform: scale(0.85) translateY(5px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-
-    /* Value card hover */
-    .value-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
-    .value-card:hover { transform: translateY(-5px); box-shadow: 0 20px 50px rgba(124,58,237,0.2), 0 0 0 1px rgba(167,139,250,0.15); }
-
-    /* Icon area in card */
-    .card-icon-area {
-      display: flex; align-items: center; justify-content: center;
-      height: 120px;
-      background: rgba(124,58,237,0.06);
-      border-bottom: 1px solid rgba(124,58,237,0.12);
+    .chip { transition: all 0.15s ease; cursor: pointer; }
+    .chip:hover {
+      background: rgba(124,58,237,0.18) !important;
+      border-color: rgba(124,58,237,0.35) !important;
     }
 
-    /* Before/after rows */
-    .ba-row { display: flex; align-items: flex-start; gap: 12px; padding: 11px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 14px; line-height: 1.5; }
-    .ba-row:last-child { border-bottom: none; }
+    .chat-input { transition: border-color 0.15s ease; }
+    .chat-input:focus { outline: none; border-color: rgba(124,58,237,0.5) !important; }
 
-    /* Scroll reveal */
-    .reveal { opacity: 0; transform: translateY(28px); }
+    .send-btn { transition: background 0.15s ease; }
+    .send-btn:hover { background: #6d28d9 !important; }
 
-    /* Chat scroll */
-    #chatMessages { scrollbar-width: thin; scrollbar-color: #4c1d95 transparent; }
-    #chatMessages::-webkit-scrollbar { width: 3px; }
-    #chatMessages::-webkit-scrollbar-thumb { background: #4c1d95; border-radius: 2px; }
+    .wrapper { height: 100dvh; }
 
-    /* Nav */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-      background: rgba(10,1,24,0.85);
-      border-bottom: 1px solid rgba(124,58,237,0.12);
+    @media (max-width: 768px) {
+      body { height: auto; overflow-y: auto; }
+      .wrapper { height: auto; min-height: 100dvh; }
+      .orb { display: none; }
     }
-
-    /* Icon chip button */
-    .chip-btn { display: inline-flex; align-items: center; gap: 5px; }
   </style>
 </head>
 <body>
@@ -120,498 +101,332 @@
 <div class="orb orb-2"></div>
 <div class="orb orb-3"></div>
 
-<!-- NAV -->
-<nav>
-  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+<div class="wrapper relative z-10 flex flex-col">
+
+  <!-- NAV -->
+  <nav class="glass flex items-center justify-between px-5 md:px-8 shrink-0" style="height:56px;border-top:none;border-left:none;border-right:none;">
     <div class="flex items-center gap-2.5">
-      <!-- Dino mark -->
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="#a78bfa" xmlns="http://www.w3.org/2000/svg">
-        <ellipse cx="14" cy="16" rx="5.5" ry="3"/>
-        <polygon points="8,14.5 10,14.5 9,7 7,7"/>
-        <ellipse cx="7.5" cy="6" rx="2.2" ry="1.5"/>
-        <polygon points="19,13.5 22.5,11.5 22,16.5"/>
-        <rect x="11" y="18.5" width="1.5" height="3" rx="0.5"/>
-        <rect x="14.5" y="18.5" width="1.5" height="3" rx="0.5"/>
-      </svg>
-      <span class="font-semibold text-white text-sm">Dino</span>
-      <span class="text-purple-400 text-xs font-medium">× Zendino</span>
+      <div style="width:26px;height:26px;">
+        <svg viewBox="0 0 24 24" fill="#a78bfa" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+          <ellipse cx="14" cy="16" rx="5.5" ry="3"/>
+          <polygon points="8,14.5 10,14.5 9,7 7,7"/>
+          <ellipse cx="7.5" cy="6" rx="2.2" ry="1.5"/>
+          <polygon points="19,13.5 22.5,11.5 22,16.5"/>
+          <rect x="11" y="18.5" width="1.5" height="3" rx="0.5"/>
+          <rect x="14.5" y="18.5" width="1.5" height="3" rx="0.5"/>
+        </svg>
+      </div>
+      <span style="font-weight:600;font-size:15px;letter-spacing:-0.01em;">Dino <span style="color:rgba(255,255,255,0.25);">×</span> Zendino</span>
     </div>
     <div class="flex items-center gap-2">
       <div class="online-dot"></div>
-      <span class="text-green-400 text-xs font-medium">Online</span>
+      <span style="font-size:12px;color:rgba(255,255,255,0.4);">Online 24/7</span>
     </div>
-  </div>
-</nav>
+  </nav>
 
-<!-- ─── HERO ─── -->
-<section class="relative z-10 min-h-screen flex items-center pt-20 pb-16 px-6">
-  <div class="max-w-6xl mx-auto w-full">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+  <!-- HERO -->
+  <main class="flex-1 flex flex-col md:flex-row gap-6 md:gap-8 px-5 md:px-8 py-5 overflow-hidden">
 
-      <!-- Left -->
-      <div>
-        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass text-xs font-semibold text-purple-300 mb-8 border border-purple-500/20">
-          <div class="online-dot" style="width:6px;height:6px;"></div>
-          AI asistent pro restaurace
-        </div>
-
-        <h1 class="text-4xl sm:text-5xl font-black leading-[1.1] text-white mb-5 tracking-tight">
-          Dino odpovídá<br>hostům za vás.<br>
-          <span class="bg-gradient-to-r from-purple-400 to-violet-300 bg-clip-text text-transparent">24/7.</span>
-        </h1>
-
-        <p class="text-lg text-purple-200/75 leading-relaxed mb-8 max-w-md">
-          Host se zeptá. Dino odpoví během <strong class="text-white">2 sekund</strong>.<br>
-          <span class="text-purple-300/80">I když je restaurace zavřená.</span>
-        </p>
-
-        <!-- Stat pills -->
-        <div class="flex flex-col gap-3 mb-10">
-          <div class="flex items-center gap-3" style="animation: pillIn 0.4s ease-out 0.5s both; opacity:0;">
-            <div class="w-5 h-5 rounded-full bg-green-500/15 flex items-center justify-center flex-shrink-0">
-              <svg class="w-3 h-3 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <span class="text-sm text-white/75">Odpověď za <span class="text-white font-semibold">~2 sekundy</span></span>
-          </div>
-          <div class="flex items-center gap-3" style="animation: pillIn 0.4s ease-out 0.8s both; opacity:0;">
-            <div class="w-5 h-5 rounded-full bg-green-500/15 flex items-center justify-center flex-shrink-0">
-              <svg class="w-3 h-3 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <span class="text-sm text-white/75">Dostupný <span class="text-white font-semibold">24/7</span></span>
-          </div>
-          <div class="flex items-center gap-3" style="animation: pillIn 0.4s ease-out 1.1s both; opacity:0;">
-            <div class="w-5 h-5 rounded-full bg-green-500/15 flex items-center justify-center flex-shrink-0">
-              <svg class="w-3 h-3 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <span class="text-sm text-white/75"><span class="text-white font-semibold">Méně</span> opakujících se dotazů pro personál</span>
-          </div>
-          <div class="flex items-center gap-3" style="animation: pillIn 0.4s ease-out 1.4s both; opacity:0;">
-            <div class="w-5 h-5 rounded-full bg-green-500/15 flex items-center justify-center flex-shrink-0">
-              <svg class="w-3 h-3 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <span class="text-sm text-white/75"><span class="text-white font-semibold">Více</span> zachycených rezervací</span>
-          </div>
-        </div>
-
-        <div class="flex flex-wrap gap-3">
-          <button onclick="activateDemo()" class="btn-pulse inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-500 text-white font-semibold px-6 py-3 rounded-xl transition-colors text-sm">
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            Spustit interaktivní demo
-          </button>
-          <a href="#" class="inline-flex items-center gap-2 glass hover:bg-white/8 text-white/70 hover:text-white font-medium px-6 py-3 rounded-xl transition-all text-sm border border-purple-500/20">
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
-            Podívat se na 60s ukázku
-          </a>
-        </div>
-      </div>
-
-      <!-- Right: chat widget -->
-      <div class="relative" id="chatSection">
-        <div class="absolute inset-0 bg-purple-600/15 blur-3xl rounded-3xl scale-95 pointer-events-none"></div>
-        <div class="relative glass rounded-2xl overflow-hidden shadow-2xl" style="height:540px;display:flex;flex-direction:column;">
-
-          <!-- Header -->
-          <div class="flex items-center gap-3 px-5 py-4 flex-shrink-0" style="background:linear-gradient(135deg,#4c1d95,#3b1a73);">
-            <div class="w-10 h-10 rounded-full bg-purple-600 flex items-center justify-center flex-shrink-0 dino-glow p-2">
-              <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
-                <ellipse cx="14" cy="16" rx="5.5" ry="3"/>
-                <polygon points="8,14.5 10,14.5 9,7 7,7"/>
-                <ellipse cx="7.5" cy="6" rx="2.2" ry="1.5"/>
-                <polygon points="19,13.5 22.5,11.5 22,16.5"/>
-                <rect x="11" y="18.5" width="1.5" height="3" rx="0.5"/>
-                <rect x="14.5" y="18.5" width="1.5" height="3" rx="0.5"/>
-              </svg>
-            </div>
-            <div class="flex-1 min-w-0">
-              <div class="font-semibold text-white text-sm">Dino — asistent Zendino</div>
-              <div class="flex items-center gap-1.5 mt-0.5">
-                <div class="online-dot" style="width:6px;height:6px;"></div>
-                <span class="text-green-400 text-xs">Online · odpovídá okamžitě</span>
-              </div>
-            </div>
-            <div class="text-xs text-purple-300/70 font-medium tracking-wide">Zendino</div>
-          </div>
-
-          <!-- Messages -->
-          <div id="chatMessages" class="flex-1 overflow-y-auto px-4 py-4 flex flex-col gap-3" style="background:rgba(26,8,48,0.55);"></div>
-
-          <!-- Quick chips -->
-          <div id="quickChips" class="px-4 pb-3 flex-shrink-0 hidden" style="background:rgba(26,8,48,0.55);">
-            <div class="flex gap-2 flex-wrap">
-              <button onclick="chipSend('Menu')" class="chip-btn glass text-purple-300 text-xs font-medium px-3 py-1.5 rounded-full border border-purple-500/25 hover:bg-purple-600/25 hover:text-white transition-all">
-                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>
-                Menu
-              </button>
-              <button onclick="chipSend('Alergeny')" class="chip-btn glass text-purple-300 text-xs font-medium px-3 py-1.5 rounded-full border border-purple-500/25 hover:bg-purple-600/25 hover:text-white transition-all">
-                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
-                Alergeny
-              </button>
-              <button onclick="chipSend('Rezervace')" class="chip-btn glass text-purple-300 text-xs font-medium px-3 py-1.5 rounded-full border border-purple-500/25 hover:bg-purple-600/25 hover:text-white transition-all">
-                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
-                Rezervace
-              </button>
-              <button onclick="chipSend('Otevírací doba')" class="chip-btn glass text-purple-300 text-xs font-medium px-3 py-1.5 rounded-full border border-purple-500/25 hover:bg-purple-600/25 hover:text-white transition-all">
-                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                Otevírací doba
-              </button>
-              <button onclick="chipSend('DinoCoiny')" class="chip-btn glass text-purple-300 text-xs font-medium px-3 py-1.5 rounded-full border border-purple-500/25 hover:bg-purple-600/25 hover:text-white transition-all">
-                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
-                DinoCoiny
-              </button>
-              <button onclick="chipSend('Rozvoz')" class="chip-btn glass text-purple-300 text-xs font-medium px-3 py-1.5 rounded-full border border-purple-500/25 hover:bg-purple-600/25 hover:text-white transition-all">
-                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11v12H5Z"/><path d="M16 3h3l3 4v4h-6V3Z"/><circle cx="7.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
-                Rozvoz
-              </button>
-            </div>
-          </div>
-
-          <!-- Input -->
-          <div class="px-4 py-3 flex gap-2 flex-shrink-0" style="background:rgba(26,8,48,0.8);border-top:1px solid rgba(124,58,237,0.15);">
-            <input id="chatInput" type="text" placeholder="Čekám na automatické demo…" disabled
-              class="flex-1 bg-white/4 border border-purple-500/15 rounded-xl px-4 py-2.5 text-sm text-white placeholder-purple-400/40 outline-none focus:border-purple-500/50 transition-all disabled:opacity-40"
-              onkeydown="if(event.key==='Enter') handleSend()"/>
-            <button onclick="handleSend()" class="w-10 h-10 rounded-xl bg-purple-600 hover:bg-purple-500 flex items-center justify-center transition-colors flex-shrink-0">
-              <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            </button>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ─── VALUE CARDS ─── -->
-<section class="relative z-10 py-24 px-6">
-  <div class="max-w-6xl mx-auto">
-    <div class="text-center mb-14 reveal">
-      <p class="text-purple-400 text-xs font-semibold uppercase tracking-widest mb-3">Každý den, bez výjimky</p>
-      <h2 class="text-3xl sm:text-4xl font-black text-white mb-4">Co Dino vyřeší za vás</h2>
-      <p class="text-purple-200/55 max-w-md mx-auto text-sm leading-relaxed">Tyto dotazy dostáváte každý den. Dino na ně odpovídá automaticky — personál se věnuje hostům u stolu.</p>
-    </div>
-
-    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-
-      <!-- Clock -->
-      <div class="value-card glass rounded-2xl overflow-hidden reveal border border-purple-500/10">
-        <div class="card-icon-area">
-          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-          </svg>
-        </div>
-        <div class="p-5">
-          <h3 class="font-bold text-white text-sm mb-1.5">Otevírací doba</h3>
-          <p class="text-xs text-purple-300/65 leading-relaxed">Personál nemusí odpovídat na „Kdy máte otevřeno?" dvacetkrát denně.</p>
-        </div>
-      </div>
-
-      <!-- Utensils -->
-      <div class="value-card glass rounded-2xl overflow-hidden reveal border border-purple-500/10">
-        <div class="card-icon-area">
-          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>
-          </svg>
-        </div>
-        <div class="p-5">
-          <h3 class="font-bold text-white text-sm mb-1.5">Dotazy na menu</h3>
-          <p class="text-xs text-purple-300/65 leading-relaxed">Složení jídel, porce, speciality dne — Dino zná menu a odpoví přesně.</p>
-        </div>
-      </div>
-
-      <!-- Shield Check -->
-      <div class="value-card glass rounded-2xl overflow-hidden reveal border border-purple-500/10">
-        <div class="card-icon-area">
-          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>
-          </svg>
-        </div>
-        <div class="p-5">
-          <h3 class="font-bold text-white text-sm mb-1.5">Alergeny</h3>
-          <p class="text-xs text-purple-300/65 leading-relaxed">Arašídy, laktóza, lepek — Dino poradí okamžitě a bez chyb.</p>
-        </div>
-      </div>
-
-      <!-- Calendar -->
-      <div class="value-card glass rounded-2xl overflow-hidden reveal border border-purple-500/10">
-        <div class="card-icon-area">
-          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/>
-          </svg>
-        </div>
-        <div class="p-5">
-          <h3 class="font-bold text-white text-sm mb-1.5">Rezervace</h3>
-          <p class="text-xs text-purple-300/65 leading-relaxed">Dino zaznamená den, čas a počet hostů. Žádná rezervace se neztratí.</p>
-        </div>
-      </div>
-
-      <!-- Truck -->
-      <div class="value-card glass rounded-2xl overflow-hidden reveal border border-purple-500/10">
-        <div class="card-icon-area">
-          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11v12H5Z"/><path d="M16 3h3l3 4v4h-6V3Z"/><circle cx="7.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>
-          </svg>
-        </div>
-        <div class="p-5">
-          <h3 class="font-bold text-white text-sm mb-1.5">Rozvoz</h3>
-          <p class="text-xs text-purple-300/65 leading-relaxed">Foodora, Wolt, doba dovozu — Dino vysvětlí doručení bez čekání.</p>
-        </div>
-      </div>
-
-      <!-- Award -->
-      <div class="value-card glass rounded-2xl overflow-hidden reveal border border-purple-500/10">
-        <div class="card-icon-area">
-          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
-          </svg>
-        </div>
-        <div class="p-5">
-          <h3 class="font-bold text-white text-sm mb-1.5">DinoCoiny</h3>
-          <p class="text-xs text-purple-300/65 leading-relaxed">Věrnostní program bez nejasností — body, slevy a odměny vysvětlí Dino.</p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ─── BEFORE / AFTER ─── -->
-<section class="relative z-10 py-24 px-6">
-  <div class="max-w-5xl mx-auto">
-    <div class="text-center mb-14 reveal">
-      <p class="text-purple-400 text-xs font-semibold uppercase tracking-widest mb-3">Reálná změna</p>
-      <h2 class="text-3xl sm:text-4xl font-black text-white">Před a po zavedení Dina</h2>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-
-      <div class="glass rounded-2xl p-8 reveal border border-red-500/8" style="background:rgba(220,38,38,0.03);">
-        <div class="flex items-center gap-3 mb-5">
-          <div class="w-7 h-7 rounded-full bg-red-500/12 flex items-center justify-center flex-shrink-0">
-            <svg class="w-3.5 h-3.5 text-red-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-          </div>
-          <h3 class="font-bold text-white/75 text-base">Bez Dina</h3>
-        </div>
-        <div class="ba-row"><span class="text-red-400/80 flex-shrink-0 text-xs mt-0.5">✗</span><span class="text-white/60 text-sm">Host čeká na odpověď — a čeká dlouho</span></div>
-        <div class="ba-row"><span class="text-red-400/80 flex-shrink-0 text-xs mt-0.5">✗</span><span class="text-white/60 text-sm">Restaurace je zavřená, Messenger mlčí</span></div>
-        <div class="ba-row"><span class="text-red-400/80 flex-shrink-0 text-xs mt-0.5">✗</span><span class="text-white/60 text-sm">Rezervace se ztratí nebo zapomene</span></div>
-        <div class="ba-row"><span class="text-red-400/80 flex-shrink-0 text-xs mt-0.5">✗</span><span class="text-white/60 text-sm">Personál odpovídá na stejné věci dokola</span></div>
-      </div>
-
-      <div class="glass rounded-2xl p-8 reveal border border-green-500/12" style="background:rgba(74,222,128,0.025);">
-        <div class="flex items-center gap-3 mb-5">
-          <div class="w-7 h-7 rounded-full bg-green-500/12 flex items-center justify-center flex-shrink-0">
-            <svg class="w-3.5 h-3.5 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-          <h3 class="font-bold text-white text-base">Po zavedení Dina</h3>
-        </div>
-        <div class="ba-row"><span class="text-green-400/80 flex-shrink-0 text-xs mt-0.5">✓</span><span class="text-white/75 text-sm">Odpověď za <strong class="text-white">2 sekundy</strong>, kdykoli</span></div>
-        <div class="ba-row"><span class="text-green-400/80 flex-shrink-0 text-xs mt-0.5">✓</span><span class="text-white/75 text-sm">Dostupné <strong class="text-white">24/7</strong>, i o půlnoci a svátcích</span></div>
-        <div class="ba-row"><span class="text-green-400/80 flex-shrink-0 text-xs mt-0.5">✓</span><span class="text-white/75 text-sm">Rezervace <strong class="text-white">zachycena a potvrzena</strong></span></div>
-        <div class="ba-row"><span class="text-green-400/80 flex-shrink-0 text-xs mt-0.5">✓</span><span class="text-white/75 text-sm">Personál se věnuje <strong class="text-white">hostům u stolu</strong></span></div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ─── STATS ─── -->
-<section class="relative z-10 py-24 px-6">
-  <div class="max-w-4xl mx-auto">
-    <div class="glass rounded-2xl p-12 reveal border border-purple-500/12 text-center">
-      <p class="text-purple-400 text-xs font-semibold uppercase tracking-widest mb-10">Potenciál pro vaši restauraci</p>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-10 mb-8">
-        <div>
-          <div class="text-5xl font-black text-white mb-2">2s</div>
-          <div class="text-xs text-purple-300/60 uppercase tracking-wider">Průměrná doba odpovědi</div>
-        </div>
-        <div class="sm:border-x border-purple-500/15">
-          <div class="text-5xl font-black text-transparent bg-gradient-to-r from-purple-400 to-violet-300 bg-clip-text mb-2">24/7</div>
-          <div class="text-xs text-purple-300/60 uppercase tracking-wider">Dostupný bez přestávky</div>
-        </div>
-        <div>
-          <div class="text-5xl font-black text-white mb-2">100%</div>
-          <div class="text-xs text-purple-300/60 uppercase tracking-wider">Dotazů zodpovězených automaticky</div>
-        </div>
-      </div>
-      <p class="text-purple-200/50 max-w-lg mx-auto text-sm leading-relaxed">
-        Dino zvládne odpovědět na desítky dotazů denně bez zapojení personálu — a pracuje i tehdy, kdy vaši lidé nemohou.
+    <!-- LEFT: headline + stats -->
+    <div class="flex flex-col justify-center md:w-5/12 shrink-0 py-2">
+      <p style="font-size:11px;font-weight:600;letter-spacing:0.1em;color:#7C3AED;text-transform:uppercase;margin-bottom:14px;">Demo — AI asistent pro restaurace</p>
+      <h1 style="font-size:clamp(26px,3.2vw,42px);font-weight:700;line-height:1.12;letter-spacing:-0.025em;margin-bottom:14px;">
+        Dino odpovídá<br>hostům za vás.<br><span style="color:#a78bfa;">24/7.</span>
+      </h1>
+      <p style="font-size:14.5px;line-height:1.65;color:rgba(255,255,255,0.5);margin-bottom:24px;max-width:340px;">
+        Host se zeptá. Dino odpoví za sekundy — i když je restaurace zavřená.
       </p>
-    </div>
-  </div>
-</section>
 
-<!-- ─── FINAL CTA ─── -->
-<section class="relative z-10 py-24 px-6">
-  <div class="max-w-3xl mx-auto text-center reveal">
-    <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full glass text-xs font-semibold text-purple-300 mb-8 border border-purple-500/20">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="#a78bfa">
-        <ellipse cx="14" cy="16" rx="5.5" ry="3"/>
-        <polygon points="8,14.5 10,14.5 9,7 7,7"/>
-        <ellipse cx="7.5" cy="6" rx="2.2" ry="1.5"/>
-        <polygon points="19,13.5 22.5,11.5 22,16.5"/>
-        <rect x="11" y="18.5" width="1.5" height="3" rx="0.5"/>
-        <rect x="14.5" y="18.5" width="1.5" height="3" rx="0.5"/>
-      </svg>
-      Zkuste to sami — hned teď
+      <div class="flex flex-wrap gap-2 mb-5">
+        <div class="stat-pill glass rounded-full flex items-center gap-1.5" style="padding:6px 12px;">
+          <span style="color:#a78bfa;font-size:13px;font-weight:600;">337</span>
+          <span style="font-size:12px;color:rgba(255,255,255,0.45);">Google recenzí</span>
+        </div>
+        <div class="stat-pill glass rounded-full flex items-center gap-1.5" style="padding:6px 12px;">
+          <span style="color:#a78bfa;font-size:13px;font-weight:600;">4,3 ★</span>
+          <span style="font-size:12px;color:rgba(255,255,255,0.45);">hodnocení</span>
+        </div>
+        <div class="stat-pill glass rounded-full flex items-center gap-1.5" style="padding:6px 12px;">
+          <span style="color:#a78bfa;font-size:13px;font-weight:600;">10:30–21:30</span>
+          <span style="font-size:12px;color:rgba(255,255,255,0.45);">denně</span>
+        </div>
+        <div class="stat-pill glass rounded-full flex items-center gap-1.5" style="padding:6px 12px;">
+          <span style="color:#a78bfa;font-size:13px;font-weight:600;">~30 min</span>
+          <span style="font-size:12px;color:rgba(255,255,255,0.45);">rozvoz</span>
+        </div>
+      </div>
+
+      <p style="font-size:12.5px;color:rgba(255,255,255,0.28);">Napište cokoliv nebo klikněte na otázku →</p>
     </div>
-    <h2 class="text-4xl sm:text-5xl font-black text-white mb-4 tracking-tight">Vyzkoušejte si Dina</h2>
-    <p class="text-purple-200/65 text-lg mb-10">Zeptejte se na menu, alergeny, rezervaci nebo otevírací dobu.</p>
-    <div class="flex flex-wrap gap-4 justify-center mb-10">
-      <button onclick="activateDemo()" class="btn-pulse inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-500 text-white font-semibold px-8 py-4 rounded-xl transition-colors text-sm">
-        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        Spustit interaktivní demo
-      </button>
-      <a href="#" class="inline-flex items-center gap-2 glass hover:bg-white/8 text-white/70 hover:text-white font-medium px-8 py-4 rounded-xl transition-all text-sm border border-purple-500/20">
-        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
-        Podívat se na 60s ukázku
-      </a>
+
+    <!-- RIGHT: chat widget -->
+    <div class="flex-1 flex flex-col glass rounded-2xl overflow-hidden" style="min-height:400px;">
+
+      <!-- Chat header -->
+      <div class="flex items-center gap-3 px-4 py-3.5 shrink-0" style="border-bottom:1px solid rgba(255,255,255,0.06);">
+        <div style="width:36px;height:36px;background:rgba(124,58,237,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid rgba(124,58,237,0.25);flex-shrink:0;">
+          <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;">
+            <ellipse cx="14" cy="16" rx="5.5" ry="3"/>
+            <polygon points="8,14.5 10,14.5 9,7 7,7"/>
+            <ellipse cx="7.5" cy="6" rx="2.2" ry="1.5"/>
+            <polygon points="19,13.5 22.5,11.5 22,16.5"/>
+            <rect x="11" y="18.5" width="1.5" height="3" rx="0.5"/>
+            <rect x="14.5" y="18.5" width="1.5" height="3" rx="0.5"/>
+          </svg>
+        </div>
+        <div>
+          <div style="font-weight:600;font-size:14px;line-height:1.3;">Dino</div>
+          <div class="flex items-center gap-1.5">
+            <div class="online-dot" style="width:6px;height:6px;"></div>
+            <span style="font-size:12px;color:rgba(255,255,255,0.4);">Asistent Zendina</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div class="chat-body flex-1 overflow-y-auto p-4" id="chatBody" style="scroll-behavior:smooth;"></div>
+
+      <!-- Quick chips -->
+      <div id="chipContainer" class="px-4 pb-2.5 flex flex-wrap gap-1.5 shrink-0"></div>
+
+      <!-- Input -->
+      <div class="px-4 pb-4 shrink-0">
+        <div class="flex gap-2">
+          <input
+            type="text"
+            id="chatInput"
+            placeholder="Napište otázku..."
+            class="chat-input flex-1 rounded-xl px-4"
+            style="height:40px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#e2d9f3;font-size:14px;"
+          />
+          <button
+            id="sendBtn"
+            class="send-btn rounded-xl flex items-center justify-center"
+            style="width:40px;height:40px;background:#7C3AED;flex-shrink:0;"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"/>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
     </div>
-    <p class="text-purple-300/40 text-sm">
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="shrink-0 flex items-center justify-center py-2.5" style="border-top:1px solid rgba(255,255,255,0.05);">
+    <p style="font-size:12px;color:rgba(255,255,255,0.22);">
       Zájem o Dina pro vaši restauraci?
-      <a href="mailto:velari.biz@gmail.com" class="text-purple-400 hover:text-purple-300 underline underline-offset-2 transition-colors ml-1">velari.biz@gmail.com</a>
+      <a href="mailto:velari.biz@gmail.com" style="color:rgba(167,139,250,0.55);text-decoration:none;margin-left:4px;">velari.biz@gmail.com</a>
     </p>
-  </div>
-</section>
+  </footer>
 
-<!-- ─── FOOTER ─── -->
-<footer class="relative z-10 py-8 px-6 border-t border-purple-500/8">
-  <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-purple-400/35">
-    <div class="flex items-center gap-2">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="#a78bfa" opacity="0.5">
-        <ellipse cx="14" cy="16" rx="5.5" ry="3"/>
-        <polygon points="8,14.5 10,14.5 9,7 7,7"/>
-        <ellipse cx="7.5" cy="6" rx="2.2" ry="1.5"/>
-        <polygon points="19,13.5 22.5,11.5 22,16.5"/>
-        <rect x="11" y="18.5" width="1.5" height="3" rx="0.5"/>
-        <rect x="14.5" y="18.5" width="1.5" height="3" rx="0.5"/>
-      </svg>
-      <span>Dino je produkt <strong class="text-purple-400/55">Velari.ai</strong> — AI automatizace pro české restaurace</span>
-    </div>
-    <span>Ukázková demo verze</span>
-  </div>
-</footer>
+</div>
 
-<!-- ═══ SCRIPT ═══ -->
 <script>
-  gsap.registerPlugin(ScrollTrigger);
-  gsap.utils.toArray('.reveal').forEach(el => {
-    gsap.to(el, {
-      opacity: 1, y: 0, duration: 0.65, ease: 'power2.out',
-      scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
-    });
-  });
+// ─── RESPONSE DATA — real Zendino data ───────────────────────────────────────
 
-  // ── Dino avatar SVG (white, for use in JS-created elements) ──
-  const DINO_SVG = `<svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;"><ellipse cx="14" cy="16" rx="5.5" ry="3"/><polygon points="8,14.5 10,14.5 9,7 7,7"/><ellipse cx="7.5" cy="6" rx="2.2" ry="1.5"/><polygon points="19,13.5 22.5,11.5 22,16.5"/><rect x="11" y="18.5" width="1.5" height="3" rx="0.5"/><rect x="14.5" y="18.5" width="1.5" height="3" rx="0.5"/></svg>`;
+const RESPONSES = [
+  {
+    kw: ['ahoj','dobry den','dobry','zdravim','hey','hi','cau','vitejte'],
+    reply: 'Dobrý den! Jsem Dino, asistent Zendina. Zeptejte se mě na menu, alergeny, otevírací dobu, rozvoz nebo věrnostní program.'
+  },
+  {
+    kw: ['otevir','hodiny','zavre','otevraci','otevren','provoz'],
+    reply: 'Jsme otevřeni každý den od 10:30 do 21:30. Rozvoz funguje ve stejných hodinách. Přijďte k nám na Nádražní 643/11, Ostrava!'
+  },
+  {
+    kw: ['menu','jidl','co mate','nabidka','co nabizite','jist','jidelni'],
+    reply: 'Nabízíme asijskou kuchyni: Pad Thai (tofu / kuřecí / krevety / hovězí), Red Curry, Pho polévky, Shoyu Ramen, Kung Pao, Tom Kha, Gyoza knedlíčky a dezerty. Na co se chcete zeptat konkrétněji?'
+  },
+  {
+    kw: ['bezlepk','gluten','lepek'],
+    reply: 'Bezlepkové volby: Pho Ga, Tom Kha Gai, Tom Kha Veggie a Jasmínová rýže. Pad Thai, Ramen a Curry lepek obsahují. Kompletní seznam alergenů je na zendino.cz.'
+  },
+  {
+    kw: ['arasid','orisek','peanut'],
+    reply: 'Arašídy obsahují: Pad Thai (všechny varianty), Red Curry s tofu, Bun Bo Nam Bo a Kung Pao. Bez arašídů jsou Pho polévky a Tom Kha — bezpečná volba při alergii.'
+  },
+  {
+    kw: ['alergen','intoleranc','obsahuje','alergick'],
+    reply: 'Kompletní seznam alergenů ke každému jídlu je na zendino.cz/seznam-alergenu/. Napište název konkrétního jídla a řeknu vám alergeny.'
+  },
+  {
+    kw: ['pad thai'],
+    reply: 'Pad Thai nabízíme ve 4 variantách: s tofu, kuřecím, krevetami nebo hovězím. Obsahuje lepek, vejce, arašídy a sóju. Krevetová varianta navíc obsahuje krutýše.'
+  },
+  {
+    kw: ['pho','ramen','polevka'],
+    reply: 'Pho Ga (kuřecí) je nejlehčí volba — obsahuje pouze ryby (alerg. 4). Pho Bo navíc obsahuje lepek. Shoyu Ramen obsahuje lepek, vejce, ryby a sóju.'
+  },
+  {
+    kw: ['curry','kari','red curry'],
+    reply: 'Red Curry nabízíme s tofu nebo s kuřecím. S tofu obsahuje lepek, arašídy, sóju a sezam. Kuřecí varianta je bez arašídů — obsahuje lepek, sóju a sezam.'
+  },
+  {
+    kw: ['rozvoz','donask','doruceni','doprava','dovoz','dostaveni'],
+    reply: 'Rozvoz denně 10:30–21:30. Cena dovozu 29 nebo 49 Kč podle zóny. Minimální objednávka 149 Kč. Standardní čas doručení do 30 minut. Objednat na zendino.cz.'
+  },
+  {
+    kw: ['dinocoin','dinoclub','vernost','vernacky','razitk','odmena','vernostni'],
+    reply: 'DinoCoiny: za každý online nákup dostanete zpět 5 % hodnoty (1 mince = 1 Kč). Po registraci rovnou 50 mincí zdarma. V bistru sbíráte razítka — za 9 razítek je Pad Thai s limonádou zdarma.'
+  },
+  {
+    kw: ['rezervac','stul','misto','sednout','rezervovat'],
+    reply: 'Pro rezervaci stolu nás kontaktujte na +420 608 864 620 nebo emailem na spokojenost@zendino.cz. Rádi vám místo připravíme.'
+  },
+  {
+    kw: ['adresa','kde jste','kde se nachazit','kontakt','kde','telefon','email'],
+    reply: 'Najdete nás na Nádražní 643/11, Moravská Ostrava. Tel: +420 608 864 620. Email: spokojenost@zendino.cz.'
+  },
+  {
+    kw: ['platit','platba','stravenk','kartou','hotovost','zaplatit','pluxee','edenred'],
+    reply: 'Platit lze online na webu, u řidiče nebo přímo v bistru. Přijímáme stravenky Pluxee, Edenred, Cheque Dejeuner a Naše stravenka, samozřejmě i kartou a hotovostí.'
+  },
+  {
+    kw: ['parkovan','zaparko','auto'],
+    reply: 'Rozvoz za 29 Kč je levnější než parkovat v centru. Nebo přijďte MHD — zastávka je kousek od bistru na Nádražní.'
+  },
+];
 
-  // ── Responses ──
-  const RESPONSES = [
-    { kw: ['bezlepk','gluten'], reply: 'Ano, máme bezlepkové možnosti. Bezlepkové jsou: Pad Thai, polévka Pho a smažená rýže s tofu. Chcete rovnou zarezervovat stůl?' },
-    { kw: ['alerg'], reply: 'Máme přehled alergenů ke každému jídlu. Na co konkrétně se ptáte? Poradím vám, které pokrmy jsou pro vás vhodné.' },
-    { kw: ['arašíd','arasid'], reply: 'Ano, Pad Thai obsahuje arašídy. Mohu doporučit alternativu bez arašídů — Pho nebo smažená rýže jsou bezpečné volby.' },
-    { kw: ['rezerv','stůl','stul','misto','místo'], reply: 'Samozřejmě. Na jaký den a čas si přejete rezervaci? A pro kolik hostů?' },
-    { kw: ['otevír','otevir','hodiny','otevřen','zavřen'], reply: 'Jsme otevřeni pondělí–pátek 11:00–22:00 a víkendy 12:00–23:00. Chcete rovnou zarezervovat?' },
-    { kw: ['menu','jídl','jidl','jídelní'], reply: 'Naše menu nabízí asijskou streetfood kuchyni — Pho, Pad Thai, Bánh mì a další. Co vás zajímá konkrétněji?' },
-    { kw: ['rozvoz','donáška','donaska','dovoz'], reply: 'Rozvoz zajišťujeme přes Foodora a Wolt. Doručení obvykle do 30–45 minut.' },
-    { kw: ['dinocoin','věrnost','vernost','body','program'], reply: 'DinoCoiny jsou náš věrnostní program — za každou útratu získáváte body, které uplatníte na slevy a odměny. Přihlásíte se na místě nebo přes web.' },
-    { kw: ['parkování','parkovani','kde','adresa'], reply: 'Zendino najdete v centru Ostravy. Parkování je v přilehlém parkovišti. Chcete odkaz na mapu nebo rovnou zarezervovat stůl?' },
-    { kw: ['ahoj','hello','dobry','dobrý','hej','zdravím','zdravim'], reply: 'Dobrý den! Jsem Dino, asistent Zendina. Pomohu vám s rezervací, menu, otevírací dobou nebo čímkoli dalším.' },
-  ];
-  const FALLBACK = 'To mi upřesněte — rád pomohu. Ptáte se na rezervaci, menu, otevírací dobu nebo alergeny?';
+const FALLBACK = 'Rád vám pomohu! Zeptejte se na menu, alergeny, otevírací dobu, rozvoz nebo věrnostní program DinoCoiny.';
 
-  function getReply(t) {
-    const n = t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').normalize('NFC');
-    for (const r of RESPONSES)
-      if (r.kw.some(k => n.includes(k.normalize('NFD').replace(/[̀-ͯ]/g,'').normalize('NFC'))))
-        return r.reply;
-    return FALLBACK;
+const CHIPS = [
+  {
+    label: 'Otevírací doba',
+    icon: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+    query: 'Jaká je otevírací doba?'
+  },
+  {
+    label: 'Menu',
+    icon: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="2" x2="8" y2="22"/><path d="M5 2v6a3 3 0 006 0V2"/><path d="M19 2v4a3 3 0 01-3 3h0v13"/></svg>`,
+    query: 'Co máte v menu?'
+  },
+  {
+    label: 'Alergeny',
+    icon: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>`,
+    query: 'Máte bezlepkové jídlo?'
+  },
+  {
+    label: 'Kde jste',
+    icon: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+    query: 'Jaká je vaše adresa?'
+  },
+  {
+    label: 'Rozvoz',
+    icon: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>`,
+    query: 'Jak funguje rozvoz?'
+  },
+  {
+    label: 'DinoCoiny',
+    icon: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>`,
+    query: 'Co jsou DinoCoiny?'
+  },
+];
+
+// ─── CHAT ENGINE ──────────────────────────────────────────────────────────────
+
+const chatBody = document.getElementById('chatBody');
+const chatInput = document.getElementById('chatInput');
+const sendBtn = document.getElementById('sendBtn');
+const chipContainer = document.getElementById('chipContainer');
+
+function norm(text) {
+  return text.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+}
+
+function getReply(text) {
+  const t = norm(text);
+  for (const r of RESPONSES) {
+    if (r.kw.some(k => t.includes(norm(k)))) return r.reply;
   }
+  return FALLBACK;
+}
 
-  const msgsEl  = document.getElementById('chatMessages');
-  const inputEl = document.getElementById('chatInput');
-  const chipsEl = document.getElementById('quickChips');
+const DINO_AVATAR = `<div style="width:28px;height:28px;background:rgba(124,58,237,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid rgba(124,58,237,0.25);flex-shrink:0;margin-top:2px;">
+  <svg viewBox="0 0 24 24" fill="white" style="width:15px;height:15px;">
+    <ellipse cx="14" cy="16" rx="5.5" ry="3"/>
+    <polygon points="8,14.5 10,14.5 9,7 7,7"/>
+    <ellipse cx="7.5" cy="6" rx="2.2" ry="1.5"/>
+    <polygon points="19,13.5 22.5,11.5 22,16.5"/>
+    <rect x="11" y="18.5" width="1.5" height="3" rx="0.5"/>
+    <rect x="14.5" y="18.5" width="1.5" height="3" rx="0.5"/>
+  </svg>
+</div>`;
 
-  function appendMsg(text, role) {
-    const row = document.createElement('div');
-    row.className = `flex ${role === 'user' ? 'justify-end' : 'items-end gap-2'} msg-in`;
-    if (role === 'dino') {
-      const av = document.createElement('div');
-      av.className = 'w-8 h-8 rounded-full bg-purple-700 flex items-center justify-center flex-shrink-0 dino-glow p-1.5';
-      av.innerHTML = DINO_SVG;
-      row.appendChild(av);
-    }
-    const b = document.createElement('div');
-    b.className = 'max-w-[78%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed';
-    b.style.cssText = role === 'dino'
-      ? 'background:rgba(255,255,255,0.06);color:rgba(248,245,255,0.85);border-bottom-left-radius:4px;'
-      : 'background:linear-gradient(135deg,#5b21b6,#7c3aed);color:#fff;border-bottom-right-radius:4px;';
-    b.textContent = text;
-    row.appendChild(b);
-    msgsEl.appendChild(row);
-    msgsEl.scrollTop = msgsEl.scrollHeight;
+function addMessage(text, sender) {
+  const wrap = document.createElement('div');
+  wrap.className = 'msg flex mb-3 ' + (sender === 'bot' ? 'justify-start' : 'justify-end');
+  if (sender === 'bot') {
+    wrap.innerHTML = `
+      <div class="flex items-start gap-2" style="max-width:88%;">
+        ${DINO_AVATAR}
+        <div style="background:rgba(124,58,237,0.14);border:1px solid rgba(124,58,237,0.2);border-radius:4px 14px 14px 14px;padding:9px 13px;font-size:13.5px;line-height:1.6;color:#e2d9f3;">${text}</div>
+      </div>`;
+  } else {
+    wrap.innerHTML = `
+      <div style="max-width:80%;background:rgba(124,58,237,0.22);border:1px solid rgba(124,58,237,0.28);border-radius:14px 4px 14px 14px;padding:9px 13px;font-size:13.5px;line-height:1.6;color:#e2d9f3;">${text}</div>`;
   }
+  chatBody.appendChild(wrap);
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
 
-  let typingEl = null;
-  function showTyping() {
-    typingEl = document.createElement('div');
-    typingEl.className = 'flex items-end gap-2 msg-in';
-    const av = document.createElement('div');
-    av.className = 'w-8 h-8 rounded-full bg-purple-700 flex items-center justify-center flex-shrink-0 p-1.5';
-    av.innerHTML = DINO_SVG;
-    const b = document.createElement('div');
-    b.style.cssText = 'background:rgba(255,255,255,0.06);border-radius:16px;border-bottom-left-radius:4px;padding:10px 14px;display:flex;gap:5px;align-items:center;';
-    for (let i=0;i<3;i++){const d=document.createElement('div');d.className='typing-dot';b.appendChild(d);}
-    typingEl.appendChild(av); typingEl.appendChild(b);
-    msgsEl.appendChild(typingEl); msgsEl.scrollTop = msgsEl.scrollHeight;
-  }
-  function hideTyping() { if (typingEl) { typingEl.remove(); typingEl = null; } }
+function showTyping() {
+  const wrap = document.createElement('div');
+  wrap.id = 'typingIndicator';
+  wrap.className = 'flex justify-start mb-3';
+  wrap.innerHTML = `
+    <div class="flex items-start gap-2">
+      ${DINO_AVATAR}
+      <div style="background:rgba(124,58,237,0.14);border:1px solid rgba(124,58,237,0.2);border-radius:4px 14px 14px 14px;padding:10px 14px;display:flex;align-items:center;gap:3px;">
+        <span class="tdot" style="color:#a78bfa;font-size:20px;line-height:1;">•</span>
+        <span class="tdot" style="color:#a78bfa;font-size:20px;line-height:1;">•</span>
+        <span class="tdot" style="color:#a78bfa;font-size:20px;line-height:1;">•</span>
+      </div>
+    </div>`;
+  chatBody.appendChild(wrap);
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
 
-  // ── Auto-play ──
-  const SCRIPT = [
-    { t: 1000,  role: 'dino', text: 'Dobrý den! Jsem Dino, asistent Zendina. Jak vám mohu pomoci?' },
-    { t: 2700,  role: 'user', text: 'Máte dnes otevřeno?' },
-    { t: 3400,  role: 'typing' },
-    { t: 5000,  role: 'dino', text: 'Ano! Dnes jsme otevřeni 11:00–22:00. Chcete rovnou zarezervovat stůl?' },
-    { t: 7000,  role: 'user', text: 'Obsahuje Pad Thai arašídy?' },
-    { t: 7700,  role: 'typing' },
-    { t: 9400,  role: 'dino', text: 'Ano, Pad Thai obsahuje arašídy. Pokud máte alergii, mohu doporučit alternativu — Pho nebo smažená rýže jsou bezpečné volby.' },
-    { t: 11600, role: 'user', text: 'Můžu rezervovat stůl pro 4 osoby?' },
-    { t: 12300, role: 'typing' },
-    { t: 14000, role: 'dino', text: 'Samozřejmě. Na jaký den a čas si přejete rezervaci?' },
-    { t: 15800, role: 'unlock' },
-  ];
+function removeTyping() {
+  const t = document.getElementById('typingIndicator');
+  if (t) t.remove();
+}
 
-  SCRIPT.forEach(s => setTimeout(() => {
-    if (s.role === 'typing') showTyping();
-    else if (s.role === 'unlock') {
-      inputEl.disabled = false;
-      inputEl.placeholder = 'Zeptejte se Dina…';
-      chipsEl.classList.remove('hidden');
-      document.querySelectorAll('.chip-btn').forEach((b,i) => {
-        b.style.opacity = '0';
-        b.style.animation = `chipAppear 0.3s ease-out ${i*0.07}s both`;
-      });
-    } else { hideTyping(); appendMsg(s.text, s.role); }
-  }, s.t));
+let busy = false;
 
-  // ── Interactive ──
-  function handleSend() {
-    const t = inputEl.value.trim();
-    if (!t || inputEl.disabled) return;
-    inputEl.value = '';
-    appendMsg(t, 'user');
-    showTyping();
-    setTimeout(() => { hideTyping(); appendMsg(getReply(t), 'dino'); }, 950);
-  }
-  function chipSend(t) {
-    if (inputEl.disabled) return;
-    appendMsg(t, 'user');
-    showTyping();
-    setTimeout(() => { hideTyping(); appendMsg(getReply(t), 'dino'); }, 950);
-  }
-  function activateDemo() {
-    document.getElementById('chatSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
-    setTimeout(() => { if (!inputEl.disabled) inputEl.focus(); }, 800);
-  }
+function handleSend(text) {
+  text = text.trim();
+  if (!text || busy) return;
+  busy = true;
+  addMessage(text, 'user');
+  chatInput.value = '';
+  showTyping();
+  setTimeout(() => {
+    removeTyping();
+    addMessage(getReply(text), 'bot');
+    busy = false;
+  }, 700 + Math.random() * 350);
+}
+
+CHIPS.forEach(chip => {
+  const btn = document.createElement('button');
+  btn.className = 'chip glass rounded-full flex items-center gap-1.5';
+  btn.style.cssText = 'padding:5px 10px;font-size:12px;color:rgba(255,255,255,0.65);';
+  btn.innerHTML = chip.icon + `<span>${chip.label}</span>`;
+  btn.addEventListener('click', () => handleSend(chip.query));
+  chipContainer.appendChild(btn);
+});
+
+sendBtn.addEventListener('click', () => handleSend(chatInput.value));
+chatInput.addEventListener('keydown', e => { if (e.key === 'Enter') handleSend(chatInput.value); });
+
+setTimeout(() => {
+  addMessage('Dobrý den! Jsem Dino, asistent Zendina. Zeptejte se mě na menu, alergeny, rezervaci nebo otevírací dobu.', 'bot');
+}, 800);
 </script>
+
 </body>
 </html>
