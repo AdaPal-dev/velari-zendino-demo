@@ -9,8 +9,8 @@
     * { box-sizing: border-box; }
 
     body {
-      background: #0a0118;
-      color: #e2d9f3;
+      background: #0a0009;
+      color: #fce7f3;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       height: 100dvh;
       overflow: hidden;
@@ -19,13 +19,13 @@
     .orb {
       position: fixed;
       border-radius: 50%;
-      filter: blur(80px);
+      filter: blur(90px);
       pointer-events: none;
       z-index: 0;
     }
-    .orb-1 { width: 420px; height: 420px; background: rgba(124,58,237,0.18); top: -120px; right: 8%; }
-    .orb-2 { width: 320px; height: 320px; background: rgba(139,92,246,0.12); bottom: 5%; left: 3%; }
-    .orb-3 { width: 220px; height: 220px; background: rgba(167,139,250,0.07); top: 45%; right: 28%; }
+    .orb-1 { width: 450px; height: 450px; background: rgba(236,29,141,0.2); top: -140px; right: 6%; }
+    .orb-2 { width: 340px; height: 340px; background: rgba(200,15,110,0.13); bottom: 5%; left: 3%; }
+    .orb-3 { width: 240px; height: 240px; background: rgba(244,114,182,0.07); top: 45%; right: 28%; }
 
     .glass {
       background: rgba(255,255,255,0.04);
@@ -72,19 +72,19 @@
 
     .chat-body::-webkit-scrollbar { width: 3px; }
     .chat-body::-webkit-scrollbar-track { background: transparent; }
-    .chat-body::-webkit-scrollbar-thumb { background: rgba(124,58,237,0.3); border-radius: 2px; }
+    .chat-body::-webkit-scrollbar-thumb { background: rgba(236,29,141,0.35); border-radius: 2px; }
 
     .chip { transition: all 0.15s ease; cursor: pointer; }
     .chip:hover {
-      background: rgba(124,58,237,0.18) !important;
-      border-color: rgba(124,58,237,0.35) !important;
+      background: rgba(236,29,141,0.18) !important;
+      border-color: rgba(236,29,141,0.4) !important;
     }
 
     .chat-input { transition: border-color 0.15s ease; }
-    .chat-input:focus { outline: none; border-color: rgba(124,58,237,0.5) !important; }
+    .chat-input:focus { outline: none; border-color: rgba(236,29,141,0.55) !important; }
 
     .send-btn { transition: background 0.15s ease; }
-    .send-btn:hover { background: #6d28d9 !important; }
+    .send-btn:hover { background: #C7157A !important; }
 
     .wrapper { height: 100dvh; }
 
@@ -106,8 +106,9 @@
   <!-- NAV -->
   <nav class="glass flex items-center justify-between px-5 md:px-8 shrink-0" style="height:56px;border-top:none;border-left:none;border-right:none;">
     <div class="flex items-center gap-2.5">
+      <!-- Dino mark — pink to match Zendino brand -->
       <div style="width:26px;height:26px;">
-        <svg viewBox="0 0 24 24" fill="#a78bfa" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+        <svg viewBox="0 0 24 24" fill="#F472B6" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
           <ellipse cx="14" cy="16" rx="5.5" ry="3"/>
           <polygon points="8,14.5 10,14.5 9,7 7,7"/>
           <ellipse cx="7.5" cy="6" rx="2.2" ry="1.5"/>
@@ -129,9 +130,9 @@
 
     <!-- LEFT: headline + stats -->
     <div class="flex flex-col justify-center md:w-5/12 shrink-0 py-2">
-      <p style="font-size:11px;font-weight:600;letter-spacing:0.1em;color:#7C3AED;text-transform:uppercase;margin-bottom:14px;">Demo — AI asistent pro restaurace</p>
+      <p style="font-size:11px;font-weight:600;letter-spacing:0.1em;color:#EC1D8D;text-transform:uppercase;margin-bottom:14px;">Demo — AI asistent pro restaurace</p>
       <h1 style="font-size:clamp(26px,3.2vw,42px);font-weight:700;line-height:1.12;letter-spacing:-0.025em;margin-bottom:14px;">
-        Dino odpovídá<br>hostům za vás.<br><span style="color:#a78bfa;">24/7.</span>
+        Dino odpovídá<br>hostům za vás.<br><span style="color:#F472B6;">24/7.</span>
       </h1>
       <p style="font-size:14.5px;line-height:1.65;color:rgba(255,255,255,0.5);margin-bottom:24px;max-width:340px;">
         Host se zeptá. Dino odpoví za sekundy — i když je restaurace zavřená.
@@ -139,19 +140,19 @@
 
       <div class="flex flex-wrap gap-2 mb-5">
         <div class="stat-pill glass rounded-full flex items-center gap-1.5" style="padding:6px 12px;">
-          <span style="color:#a78bfa;font-size:13px;font-weight:600;">337</span>
+          <span style="color:#F472B6;font-size:13px;font-weight:600;">337</span>
           <span style="font-size:12px;color:rgba(255,255,255,0.45);">Google recenzí</span>
         </div>
         <div class="stat-pill glass rounded-full flex items-center gap-1.5" style="padding:6px 12px;">
-          <span style="color:#a78bfa;font-size:13px;font-weight:600;">4,3 ★</span>
+          <span style="color:#F472B6;font-size:13px;font-weight:600;">4,3 ★</span>
           <span style="font-size:12px;color:rgba(255,255,255,0.45);">hodnocení</span>
         </div>
         <div class="stat-pill glass rounded-full flex items-center gap-1.5" style="padding:6px 12px;">
-          <span style="color:#a78bfa;font-size:13px;font-weight:600;">10:30–21:30</span>
+          <span style="color:#F472B6;font-size:13px;font-weight:600;">10:30–21:30</span>
           <span style="font-size:12px;color:rgba(255,255,255,0.45);">denně</span>
         </div>
         <div class="stat-pill glass rounded-full flex items-center gap-1.5" style="padding:6px 12px;">
-          <span style="color:#a78bfa;font-size:13px;font-weight:600;">~30 min</span>
+          <span style="color:#F472B6;font-size:13px;font-weight:600;">~30 min</span>
           <span style="font-size:12px;color:rgba(255,255,255,0.45);">rozvoz</span>
         </div>
       </div>
@@ -164,8 +165,9 @@
 
       <!-- Chat header -->
       <div class="flex items-center gap-3 px-4 py-3.5 shrink-0" style="border-bottom:1px solid rgba(255,255,255,0.06);">
-        <div style="width:36px;height:36px;background:rgba(124,58,237,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid rgba(124,58,237,0.25);flex-shrink:0;">
-          <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;">
+        <!-- Green dino avatar — matches Zendino's real green dino mascot -->
+        <div style="width:36px;height:36px;background:rgba(74,222,128,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid rgba(74,222,128,0.3);flex-shrink:0;">
+          <svg viewBox="0 0 24 24" fill="#4ADE80" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;">
             <ellipse cx="14" cy="16" rx="5.5" ry="3"/>
             <polygon points="8,14.5 10,14.5 9,7 7,7"/>
             <ellipse cx="7.5" cy="6" rx="2.2" ry="1.5"/>
@@ -197,12 +199,12 @@
             id="chatInput"
             placeholder="Napište otázku..."
             class="chat-input flex-1 rounded-xl px-4"
-            style="height:40px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#e2d9f3;font-size:14px;"
+            style="height:40px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#fce7f3;font-size:14px;"
           />
           <button
             id="sendBtn"
             class="send-btn rounded-xl flex items-center justify-center"
-            style="width:40px;height:40px;background:#7C3AED;flex-shrink:0;"
+            style="width:40px;height:40px;background:#EC1D8D;flex-shrink:0;"
           >
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="22" y1="2" x2="11" y2="13"/>
@@ -219,7 +221,7 @@
   <footer class="shrink-0 flex items-center justify-center py-2.5" style="border-top:1px solid rgba(255,255,255,0.05);">
     <p style="font-size:12px;color:rgba(255,255,255,0.22);">
       Zájem o Dina pro vaši restauraci?
-      <a href="mailto:velari.biz@gmail.com" style="color:rgba(167,139,250,0.55);text-decoration:none;margin-left:4px;">velari.biz@gmail.com</a>
+      <a href="mailto:velari.biz@gmail.com" style="color:rgba(244,114,182,0.65);text-decoration:none;margin-left:4px;">velari.biz@gmail.com</a>
     </p>
   </footer>
 
@@ -296,32 +298,32 @@ const FALLBACK = 'Rád vám pomohu! Zeptejte se na menu, alergeny, otevírací d
 const CHIPS = [
   {
     label: 'Otevírací doba',
-    icon: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+    icon: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#F472B6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
     query: 'Jaká je otevírací doba?'
   },
   {
     label: 'Menu',
-    icon: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="2" x2="8" y2="22"/><path d="M5 2v6a3 3 0 006 0V2"/><path d="M19 2v4a3 3 0 01-3 3h0v13"/></svg>`,
+    icon: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#F472B6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="2" x2="8" y2="22"/><path d="M5 2v6a3 3 0 006 0V2"/><path d="M19 2v4a3 3 0 01-3 3h0v13"/></svg>`,
     query: 'Co máte v menu?'
   },
   {
     label: 'Alergeny',
-    icon: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>`,
+    icon: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#F472B6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>`,
     query: 'Máte bezlepkové jídlo?'
   },
   {
     label: 'Kde jste',
-    icon: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+    icon: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#F472B6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
     query: 'Jaká je vaše adresa?'
   },
   {
     label: 'Rozvoz',
-    icon: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>`,
+    icon: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#F472B6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>`,
     query: 'Jak funguje rozvoz?'
   },
   {
     label: 'DinoCoiny',
-    icon: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>`,
+    icon: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#F472B6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>`,
     query: 'Co jsou DinoCoiny?'
   },
 ];
@@ -345,8 +347,9 @@ function getReply(text) {
   return FALLBACK;
 }
 
-const DINO_AVATAR = `<div style="width:28px;height:28px;background:rgba(124,58,237,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid rgba(124,58,237,0.25);flex-shrink:0;margin-top:2px;">
-  <svg viewBox="0 0 24 24" fill="white" style="width:15px;height:15px;">
+// Green dino avatar — matches Zendino's actual green mascot
+const DINO_AVATAR = `<div style="width:28px;height:28px;background:rgba(74,222,128,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid rgba(74,222,128,0.3);flex-shrink:0;margin-top:2px;">
+  <svg viewBox="0 0 24 24" fill="#4ADE80" style="width:15px;height:15px;">
     <ellipse cx="14" cy="16" rx="5.5" ry="3"/>
     <polygon points="8,14.5 10,14.5 9,7 7,7"/>
     <ellipse cx="7.5" cy="6" rx="2.2" ry="1.5"/>
@@ -363,11 +366,11 @@ function addMessage(text, sender) {
     wrap.innerHTML = `
       <div class="flex items-start gap-2" style="max-width:88%;">
         ${DINO_AVATAR}
-        <div style="background:rgba(124,58,237,0.14);border:1px solid rgba(124,58,237,0.2);border-radius:4px 14px 14px 14px;padding:9px 13px;font-size:13.5px;line-height:1.6;color:#e2d9f3;">${text}</div>
+        <div style="background:rgba(236,29,141,0.12);border:1px solid rgba(236,29,141,0.2);border-radius:4px 14px 14px 14px;padding:9px 13px;font-size:13.5px;line-height:1.6;color:#fce7f3;">${text}</div>
       </div>`;
   } else {
     wrap.innerHTML = `
-      <div style="max-width:80%;background:rgba(124,58,237,0.22);border:1px solid rgba(124,58,237,0.28);border-radius:14px 4px 14px 14px;padding:9px 13px;font-size:13.5px;line-height:1.6;color:#e2d9f3;">${text}</div>`;
+      <div style="max-width:80%;background:rgba(236,29,141,0.2);border:1px solid rgba(236,29,141,0.28);border-radius:14px 4px 14px 14px;padding:9px 13px;font-size:13.5px;line-height:1.6;color:#fce7f3;">${text}</div>`;
   }
   chatBody.appendChild(wrap);
   chatBody.scrollTop = chatBody.scrollHeight;
@@ -380,10 +383,10 @@ function showTyping() {
   wrap.innerHTML = `
     <div class="flex items-start gap-2">
       ${DINO_AVATAR}
-      <div style="background:rgba(124,58,237,0.14);border:1px solid rgba(124,58,237,0.2);border-radius:4px 14px 14px 14px;padding:10px 14px;display:flex;align-items:center;gap:3px;">
-        <span class="tdot" style="color:#a78bfa;font-size:20px;line-height:1;">•</span>
-        <span class="tdot" style="color:#a78bfa;font-size:20px;line-height:1;">•</span>
-        <span class="tdot" style="color:#a78bfa;font-size:20px;line-height:1;">•</span>
+      <div style="background:rgba(236,29,141,0.12);border:1px solid rgba(236,29,141,0.2);border-radius:4px 14px 14px 14px;padding:10px 14px;display:flex;align-items:center;gap:3px;">
+        <span class="tdot" style="color:#F472B6;font-size:20px;line-height:1;">•</span>
+        <span class="tdot" style="color:#F472B6;font-size:20px;line-height:1;">•</span>
+        <span class="tdot" style="color:#F472B6;font-size:20px;line-height:1;">•</span>
       </div>
     </div>`;
   chatBody.appendChild(wrap);
