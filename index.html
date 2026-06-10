@@ -9,14 +9,13 @@
     * { box-sizing: border-box; }
 
     body {
-      background: #180a2e;
+      background: #0d0919;
       color: #f0ecfa;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       height: 100dvh;
       overflow: hidden;
     }
 
-    /* Brand orbs — Zendino purple + subtle lime */
     .orb {
       position: fixed;
       border-radius: 50%;
@@ -24,9 +23,9 @@
       pointer-events: none;
       z-index: 0;
     }
-    .orb-1 { width: 480px; height: 480px; background: rgba(82,43,121,0.35); top: -140px; right: 5%; }
-    .orb-2 { width: 360px; height: 360px; background: rgba(50,18,82,0.28); bottom: 4%; left: 2%; }
-    .orb-3 { width: 200px; height: 200px; background: rgba(210,218,39,0.06); top: 40%; right: 30%; }
+    .orb-1 { width: 500px; height: 500px; background: rgba(72,30,110,0.42); top: -150px; right: 4%; }
+    .orb-2 { width: 380px; height: 380px; background: rgba(38,12,65,0.38); bottom: 3%; left: 1%; }
+    .orb-3 { width: 220px; height: 220px; background: rgba(210,218,39,0.07); top: 42%; right: 28%; }
 
     .glass {
       background: rgba(255,255,255,0.04);
@@ -80,32 +79,78 @@
     .tdot:nth-child(2) { animation-delay: 0.18s; }
     .tdot:nth-child(3) { animation-delay: 0.36s; }
 
+    @keyframes ring-pulse {
+      0% { transform: scale(1); opacity: 0.65; }
+      100% { transform: scale(2.4); opacity: 0; }
+    }
+    .call-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 2px solid rgba(210,218,39,0.5);
+      animation: ring-pulse 2s ease-out infinite;
+    }
+    .call-ring:nth-child(2) { animation-delay: 0.67s; }
+    .call-ring:nth-child(3) { animation-delay: 1.33s; }
+
+    @keyframes bar-wave {
+      0%, 100% { transform: scaleY(0.25); }
+      50% { transform: scaleY(1); }
+    }
+    .speak-bar {
+      width: 3px;
+      height: 20px;
+      background: #D2DA27;
+      border-radius: 2px;
+      transform-origin: center;
+      animation: bar-wave 0.75s ease-in-out infinite;
+    }
+    .speak-bar:nth-child(1) { animation-delay: 0s;    height: 14px; }
+    .speak-bar:nth-child(2) { animation-delay: 0.1s;  height: 22px; }
+    .speak-bar:nth-child(3) { animation-delay: 0.2s;  height: 18px; }
+    .speak-bar:nth-child(4) { animation-delay: 0.12s; height: 26px; }
+    .speak-bar:nth-child(5) { animation-delay: 0.05s; height: 12px; }
+
     .chat-body::-webkit-scrollbar { width: 3px; }
     .chat-body::-webkit-scrollbar-track { background: transparent; }
     .chat-body::-webkit-scrollbar-thumb { background: rgba(210,218,39,0.3); border-radius: 2px; }
 
-    /* Lime accent chip hover */
     .chip { transition: all 0.15s ease; cursor: pointer; }
     .chip:hover {
       background: rgba(210,218,39,0.12) !important;
-      border-color: rgba(210,218,39,0.35) !important;
+      border-color: rgba(210,218,39,0.38) !important;
     }
 
     .chat-input { transition: border-color 0.15s ease; }
-    .chat-input:focus { outline: none; border-color: rgba(210,218,39,0.5) !important; }
+    .chat-input:focus { outline: none; border-color: rgba(210,218,39,0.55) !important; }
 
-    /* Lime send button with dark text — Zendino brand style */
     .send-btn { transition: background 0.15s ease; }
     .send-btn:hover { background: #b8c020 !important; }
 
     .food-photo {
-      width: 72px;
-      height: 72px;
+      width: 72px; height: 72px;
       border-radius: 50%;
       object-fit: cover;
       flex-shrink: 0;
       box-shadow: 0 0 0 2px rgba(210,218,39,0.35), 0 4px 16px rgba(0,0,0,0.5);
     }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 8px;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.38);
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .tab-btn.active { color: #D2DA27; border-bottom-color: #D2DA27; }
+    .tab-btn:hover:not(.active) { color: rgba(255,255,255,0.62); }
+
+    #voicePanel { display: none; flex-direction: column; flex: 1; overflow: hidden; }
 
     .wrapper { height: 100dvh; }
 
@@ -125,9 +170,9 @@
 <div class="wrapper relative z-10 flex flex-col">
 
   <!-- NAV -->
-  <nav class="glass flex items-center justify-between px-5 md:px-8 shrink-0" style="height:56px;border-top:none;border-left:none;border-right:none;">
+  <nav class="glass flex items-center justify-between px-5 md:px-8 shrink-0"
+       style="height:56px;border-top:none;border-left:none;border-right:none;">
     <div class="flex items-center gap-2.5">
-      <!-- Dino mark — lime to match ZENDINO logo -->
       <div style="width:26px;height:26px;">
         <svg viewBox="0 0 24 24" fill="#D2DA27" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
           <ellipse cx="14" cy="16" rx="5.5" ry="3"/>
@@ -138,7 +183,9 @@
           <rect x="14.5" y="18.5" width="1.5" height="3" rx="0.5"/>
         </svg>
       </div>
-      <span style="font-weight:600;font-size:15px;letter-spacing:-0.01em;">Dino <span style="color:rgba(255,255,255,0.25);">×</span> Zendino</span>
+      <span style="font-weight:600;font-size:15px;letter-spacing:-0.01em;">
+        Dino <span style="color:rgba(255,255,255,0.22);">×</span> Zendino
+      </span>
     </div>
     <div class="flex items-center gap-2">
       <div class="online-dot"></div>
@@ -146,14 +193,16 @@
     </div>
   </nav>
 
-  <!-- HERO -->
+  <!-- MAIN -->
   <main class="flex-1 flex flex-col md:flex-row gap-6 md:gap-8 px-5 md:px-8 py-5 overflow-hidden">
 
-    <!-- LEFT: headline + food cards + stats -->
+    <!-- LEFT: hero + food cards + stats -->
     <div class="flex flex-col justify-center md:w-5/12 shrink-0 py-2 gap-4">
 
       <div>
-        <p style="font-size:11px;font-weight:600;letter-spacing:0.1em;color:#D2DA27;text-transform:uppercase;margin-bottom:12px;">Demo — AI asistent pro vaši restauraci</p>
+        <p style="font-size:11px;font-weight:600;letter-spacing:0.1em;color:#D2DA27;text-transform:uppercase;margin-bottom:12px;">
+          Demo — AI asistent pro vaši restauraci
+        </p>
         <h1 style="font-size:clamp(24px,2.8vw,38px);font-weight:700;line-height:1.12;letter-spacing:-0.025em;margin-bottom:12px;">
           Dino odpovídá<br>hostům za vás.<br><span style="color:#D2DA27;">24/7.</span>
         </h1>
@@ -162,39 +211,39 @@
         </p>
       </div>
 
-      <!-- Real Zendino food photos -->
+      <!-- Food photos -->
       <div class="flex gap-3">
-
-        <div class="food-card glass rounded-xl flex-1 flex flex-col items-center gap-2 py-3 px-2" style="border-color:rgba(210,218,39,0.12);">
+        <div class="food-card glass rounded-xl flex-1 flex flex-col items-center gap-2 py-3 px-2"
+             style="border-color:rgba(210,218,39,0.12);">
           <img src="https://i.ibb.co/4RZMHvn1/zendino-food-1.png" alt="Bun Bo Nam Bo" class="food-photo" />
           <div class="text-center">
             <p style="font-size:12px;font-weight:600;color:#f0ecfa;line-height:1.3;">Bun Bo Nam Bo</p>
-            <p style="font-size:11px;color:rgba(255,255,255,0.4);line-height:1.3;">nudle, hovězí</p>
+            <p style="font-size:10px;color:#D2DA27;font-weight:700;margin-top:2px;">239 Kč</p>
           </div>
         </div>
-
-        <div class="food-card glass rounded-xl flex-1 flex flex-col items-center gap-2 py-3 px-2" style="border-color:rgba(210,218,39,0.12);">
-          <img src="https://i.ibb.co/20Br06n0/zendino-food-2.png" alt="Asijský bowl" class="food-photo" style="object-position: center 20%;" />
+        <div class="food-card glass rounded-xl flex-1 flex flex-col items-center gap-2 py-3 px-2"
+             style="border-color:rgba(210,218,39,0.12);">
+          <img src="https://i.ibb.co/20Br06n0/zendino-food-2.png" alt="Kung Pao" class="food-photo"
+               style="object-position:center 20%;" />
           <div class="text-center">
-            <p style="font-size:12px;font-weight:600;color:#f0ecfa;line-height:1.3;">Asijský bowl</p>
-            <p style="font-size:11px;color:rgba(255,255,255,0.4);line-height:1.3;">rýže, hovězí</p>
+            <p style="font-size:12px;font-weight:600;color:#f0ecfa;line-height:1.3;">Kung Pao</p>
+            <p style="font-size:10px;color:#D2DA27;font-weight:700;margin-top:2px;">229 Kč</p>
           </div>
         </div>
-
-        <div class="food-card glass rounded-xl flex-1 flex flex-col items-center gap-2 py-3 px-2" style="border-color:rgba(210,218,39,0.12);">
+        <div class="food-card glass rounded-xl flex-1 flex flex-col items-center gap-2 py-3 px-2"
+             style="border-color:rgba(210,218,39,0.12);">
           <img src="https://i.ibb.co/BMspqV0/zendino-food-3.png" alt="Pho Bo" class="food-photo" />
           <div class="text-center">
             <p style="font-size:12px;font-weight:600;color:#f0ecfa;line-height:1.3;">Pho Bo</p>
-            <p style="font-size:11px;color:rgba(255,255,255,0.4);line-height:1.3;">hovězí vývar</p>
+            <p style="font-size:10px;color:#D2DA27;font-weight:700;margin-top:2px;">239 Kč</p>
           </div>
         </div>
-
       </div>
 
       <!-- Stats -->
       <div class="flex flex-wrap gap-2">
         <div class="stat-pill glass rounded-full flex items-center gap-1.5" style="padding:5px 11px;">
-          <span style="color:#D2DA27;font-size:13px;font-weight:600;">337</span>
+          <span style="color:#D2DA27;font-size:13px;font-weight:600;">338</span>
           <span style="font-size:11px;color:rgba(255,255,255,0.45);">Google recenzí</span>
         </div>
         <div class="stat-pill glass rounded-full flex items-center gap-1.5" style="padding:5px 11px;">
@@ -214,164 +263,481 @@
       <p style="font-size:12px;color:rgba(255,255,255,0.28);">Napište cokoliv nebo klikněte na otázku →</p>
     </div>
 
-    <!-- RIGHT: chat widget -->
+    <!-- RIGHT: tabbed widget -->
     <div class="flex-1 flex flex-col glass rounded-2xl overflow-hidden" style="min-height:400px;">
 
-      <!-- Chat header -->
-      <div class="flex items-center gap-3 px-4 py-3.5 shrink-0" style="border-bottom:1px solid rgba(255,255,255,0.06);">
-        <div style="width:36px;height:36px;background:rgba(210,218,39,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid rgba(210,218,39,0.25);flex-shrink:0;">
-          <svg viewBox="0 0 24 24" fill="#D2DA27" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;">
-            <ellipse cx="14" cy="16" rx="5.5" ry="3"/>
-            <polygon points="8,14.5 10,14.5 9,7 7,7"/>
-            <ellipse cx="7.5" cy="6" rx="2.2" ry="1.5"/>
-            <polygon points="19,13.5 22.5,11.5 22,16.5"/>
-            <rect x="11" y="18.5" width="1.5" height="3" rx="0.5"/>
-            <rect x="14.5" y="18.5" width="1.5" height="3" rx="0.5"/>
+      <!-- Tabs -->
+      <div class="flex shrink-0" style="border-bottom:1px solid rgba(255,255,255,0.07);">
+        <button class="tab-btn active" id="tabChat" onclick="switchTab('chat')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round"
+               style="display:inline;margin-right:5px;vertical-align:-1px;">
+            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
           </svg>
-        </div>
-        <div>
-          <div style="font-weight:600;font-size:14px;line-height:1.3;">Dino</div>
-          <div class="flex items-center gap-1.5">
-            <div class="online-dot" style="width:6px;height:6px;"></div>
-            <span style="font-size:12px;color:rgba(255,255,255,0.4);">Asistent Zendina</span>
+          Chat s Dinem
+        </button>
+        <button class="tab-btn" id="tabVoice" onclick="switchTab('voice')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round"
+               style="display:inline;margin-right:5px;vertical-align:-1px;">
+            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.63a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+          </svg>
+          Hlasový asistent
+        </button>
+      </div>
+
+      <!-- ── CHAT PANEL ────────────────────────────────────── -->
+      <div id="chatPanel" class="flex flex-col flex-1 overflow-hidden">
+
+        <!-- Chat header -->
+        <div class="flex items-center gap-3 px-4 py-3.5 shrink-0"
+             style="border-bottom:1px solid rgba(255,255,255,0.06);">
+          <div style="width:36px;height:36px;background:rgba(210,218,39,0.15);border-radius:50%;
+                      display:flex;align-items:center;justify-content:center;
+                      border:1px solid rgba(210,218,39,0.25);flex-shrink:0;">
+            <svg viewBox="0 0 24 24" fill="#D2DA27" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;">
+              <ellipse cx="14" cy="16" rx="5.5" ry="3"/>
+              <polygon points="8,14.5 10,14.5 9,7 7,7"/>
+              <ellipse cx="7.5" cy="6" rx="2.2" ry="1.5"/>
+              <polygon points="19,13.5 22.5,11.5 22,16.5"/>
+              <rect x="11" y="18.5" width="1.5" height="3" rx="0.5"/>
+              <rect x="14.5" y="18.5" width="1.5" height="3" rx="0.5"/>
+            </svg>
+          </div>
+          <div>
+            <div style="font-weight:600;font-size:14px;line-height:1.3;">Dino</div>
+            <div class="flex items-center gap-1.5">
+              <div class="online-dot" style="width:6px;height:6px;"></div>
+              <span style="font-size:12px;color:rgba(255,255,255,0.4);">Asistent Zendina</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Messages -->
-      <div class="chat-body flex-1 overflow-y-auto p-4" id="chatBody" style="scroll-behavior:smooth;"></div>
+        <!-- Messages -->
+        <div class="chat-body flex-1 overflow-y-auto p-4" id="chatBody" style="scroll-behavior:smooth;"></div>
 
-      <!-- Quick chips -->
-      <div id="chipContainer" class="px-4 pb-2.5 flex flex-wrap gap-1.5 shrink-0"></div>
+        <!-- Quick chips -->
+        <div id="chipContainer" class="px-4 pb-2.5 flex flex-wrap gap-1.5 shrink-0"></div>
 
-      <!-- Input -->
-      <div class="px-4 pb-4 shrink-0">
-        <div class="flex gap-2">
-          <input
-            type="text"
-            id="chatInput"
-            placeholder="Napište otázku..."
-            class="chat-input flex-1 rounded-xl px-4"
-            style="height:40px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#f0ecfa;font-size:14px;"
-          />
-          <button
-            id="sendBtn"
-            class="send-btn rounded-xl flex items-center justify-center"
-            style="width:40px;height:40px;background:#D2DA27;flex-shrink:0;"
-          >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#180a2e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="22" y1="2" x2="11" y2="13"/>
-              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-            </svg>
-          </button>
+        <!-- Input -->
+        <div class="px-4 pb-4 shrink-0">
+          <div class="flex gap-2">
+            <input type="text" id="chatInput" placeholder="Napište otázku..."
+              class="chat-input flex-1 rounded-xl px-4"
+              style="height:40px;background:rgba(255,255,255,0.06);
+                     border:1px solid rgba(255,255,255,0.1);color:#f0ecfa;font-size:14px;" />
+            <button id="sendBtn" class="send-btn rounded-xl flex items-center justify-center"
+              style="width:40px;height:40px;background:#D2DA27;flex-shrink:0;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                   stroke="#0d0919" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"/>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+            </button>
+          </div>
         </div>
-      </div>
 
-    </div>
+      </div><!-- /chatPanel -->
+
+      <!-- ── VOICE PANEL ───────────────────────────────────── -->
+      <div id="voicePanel">
+
+        <!-- IDLE: incoming call -->
+        <div id="callIdle"
+             style="display:flex;flex-direction:column;align-items:center;
+                    justify-content:center;flex:1;gap:24px;padding:32px 24px;">
+
+          <!-- Ring animation -->
+          <div style="position:relative;width:96px;height:96px;flex-shrink:0;">
+            <div class="call-ring"></div>
+            <div class="call-ring"></div>
+            <div class="call-ring"></div>
+            <div style="position:absolute;inset:0;border-radius:50%;
+                        background:rgba(210,218,39,0.13);border:2px solid rgba(210,218,39,0.42);
+                        display:flex;align-items:center;justify-content:center;">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none"
+                   stroke="#D2DA27" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.63a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+              </svg>
+            </div>
+          </div>
+
+          <div style="text-align:center;">
+            <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:5px;">Příchozí hovor...</p>
+            <p style="font-size:22px;font-weight:700;letter-spacing:-0.02em;">+420 608 864 620</p>
+            <p style="font-size:13px;color:rgba(255,255,255,0.48);margin-top:4px;">Zendino — Asijské bistro, Ostrava</p>
+          </div>
+
+          <div style="display:flex;gap:20px;align-items:center;">
+            <!-- Decline -->
+            <button onclick="declineCall()"
+                    style="display:flex;flex-direction:column;align-items:center;gap:7px;
+                           background:transparent;border:none;cursor:pointer;">
+              <div style="width:54px;height:54px;border-radius:50%;
+                          background:rgba(239,68,68,0.18);border:1px solid rgba(239,68,68,0.38);
+                          display:flex;align-items:center;justify-content:center;transition:background 0.15s;"
+                   onmouseover="this.style.background='rgba(239,68,68,0.32)'"
+                   onmouseout="this.style.background='rgba(239,68,68,0.18)'">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ef4444"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </div>
+              <span style="font-size:11px;color:rgba(255,255,255,0.38);">Odmítnout</span>
+            </button>
+            <!-- Accept -->
+            <button onclick="acceptCall()"
+                    style="display:flex;flex-direction:column;align-items:center;gap:7px;
+                           background:transparent;border:none;cursor:pointer;">
+              <div style="width:54px;height:54px;border-radius:50%;
+                          background:rgba(34,197,94,0.18);border:1px solid rgba(34,197,94,0.4);
+                          display:flex;align-items:center;justify-content:center;transition:background 0.15s;"
+                   onmouseover="this.style.background='rgba(34,197,94,0.32)'"
+                   onmouseout="this.style.background='rgba(34,197,94,0.18)'">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#22c55e"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.63a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+                </svg>
+              </div>
+              <span style="font-size:11px;color:rgba(255,255,255,0.38);">Přijmout</span>
+            </button>
+          </div>
+
+          <p style="font-size:11px;color:rgba(255,255,255,0.2);text-align:center;max-width:220px;line-height:1.6;">
+            Demo hlasového asistenta — klikněte Přijmout
+          </p>
+        </div><!-- /callIdle -->
+
+        <!-- ACTIVE: connected call -->
+        <div id="callActive"
+             style="display:none;flex-direction:column;align-items:center;
+                    justify-content:space-between;flex:1;padding:28px 24px 20px;">
+
+          <!-- Top: avatar + speaking bars + transcript -->
+          <div style="display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;">
+
+            <div style="position:relative;margin-bottom:8px;">
+              <div style="width:72px;height:72px;background:rgba(210,218,39,0.15);border-radius:50%;
+                          border:2px solid rgba(210,218,39,0.42);
+                          display:flex;align-items:center;justify-content:center;">
+                <svg viewBox="0 0 24 24" fill="#D2DA27" style="width:36px;height:36px;">
+                  <ellipse cx="14" cy="16" rx="5.5" ry="3"/>
+                  <polygon points="8,14.5 10,14.5 9,7 7,7"/>
+                  <ellipse cx="7.5" cy="6" rx="2.2" ry="1.5"/>
+                  <polygon points="19,13.5 22.5,11.5 22,16.5"/>
+                  <rect x="11" y="18.5" width="1.5" height="3" rx="0.5"/>
+                  <rect x="14.5" y="18.5" width="1.5" height="3" rx="0.5"/>
+                </svg>
+              </div>
+              <!-- Speaking bars -->
+              <div style="position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);
+                          display:flex;align-items:flex-end;justify-content:center;gap:3px;">
+                <div class="speak-bar"></div>
+                <div class="speak-bar"></div>
+                <div class="speak-bar"></div>
+                <div class="speak-bar"></div>
+                <div class="speak-bar"></div>
+              </div>
+            </div>
+
+            <div style="text-align:center;margin-top:6px;">
+              <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:3px;">
+                <div class="online-dot" style="width:6px;height:6px;"></div>
+                <span style="font-size:11px;color:#22c55e;font-weight:500;">Připojeno</span>
+              </div>
+              <p style="font-size:15px;font-weight:600;">Dino hovoří...</p>
+            </div>
+
+            <!-- Live transcript -->
+            <div id="transcript"
+                 style="width:100%;max-height:120px;overflow-y:auto;
+                        background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
+                        border-radius:10px;padding:10px 12px;
+                        font-size:12px;line-height:1.7;color:rgba(255,255,255,0.6);">
+            </div>
+          </div>
+
+          <!-- Bottom: post-call chips + end call + note -->
+          <div style="display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;margin-top:16px;">
+
+            <div id="postCallChips"
+                 style="display:none;flex-wrap:wrap;justify-content:center;gap:7px;width:100%;"></div>
+
+            <button onclick="endCall()"
+                    style="display:flex;flex-direction:column;align-items:center;gap:5px;
+                           background:transparent;border:none;cursor:pointer;">
+              <div style="width:48px;height:48px;border-radius:50%;
+                          background:rgba(239,68,68,0.18);border:1px solid rgba(239,68,68,0.38);
+                          display:flex;align-items:center;justify-content:center;transition:background 0.15s;"
+                   onmouseover="this.style.background='rgba(239,68,68,0.32)'"
+                   onmouseout="this.style.background='rgba(239,68,68,0.18)'">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </div>
+              <span style="font-size:11px;color:rgba(255,255,255,0.38);">Ukončit</span>
+            </button>
+
+            <p style="font-size:10px;color:rgba(255,255,255,0.22);text-align:center;">
+              Demo: hlasová syntéza v prohlížeči &nbsp;·&nbsp;
+              Produkce: <span style="color:rgba(210,218,39,0.5);">ElevenLabs (Czech voice)</span>
+            </p>
+          </div>
+
+        </div><!-- /callActive -->
+
+        <!-- DECLINED state -->
+        <div id="callDeclined"
+             style="display:none;flex-direction:column;align-items:center;
+                    justify-content:center;flex:1;gap:16px;padding:24px;">
+          <div style="width:64px;height:64px;border-radius:50%;
+                      background:rgba(239,68,68,0.13);border:1px solid rgba(239,68,68,0.3);
+                      display:flex;align-items:center;justify-content:center;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ef4444"
+                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </div>
+          <p style="font-size:14px;color:rgba(255,255,255,0.48);">Hovor byl odmítnut</p>
+          <button onclick="resetCall()"
+                  style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
+                         border-radius:8px;padding:7px 18px;font-size:13px;
+                         color:rgba(255,255,255,0.55);cursor:pointer;transition:background 0.15s;"
+                  onmouseover="this.style.background='rgba(255,255,255,0.1)'"
+                  onmouseout="this.style.background='rgba(255,255,255,0.06)'">
+            Znovu zavolat
+          </button>
+        </div><!-- /callDeclined -->
+
+      </div><!-- /voicePanel -->
+
+    </div><!-- /right column -->
   </main>
 
   <!-- FOOTER -->
-  <footer class="shrink-0 flex items-center justify-center py-2.5" style="border-top:1px solid rgba(255,255,255,0.05);">
+  <footer class="shrink-0 flex items-center justify-center py-2.5"
+          style="border-top:1px solid rgba(255,255,255,0.05);">
     <p style="font-size:12px;color:rgba(255,255,255,0.22);">
       Zájem o Dina pro vaši restauraci?
-      <a href="mailto:velari.biz@gmail.com" style="color:rgba(210,218,39,0.6);text-decoration:none;margin-left:4px;">velari.biz@gmail.com</a>
+      <a href="mailto:velari.biz@gmail.com"
+         style="color:rgba(210,218,39,0.6);text-decoration:none;margin-left:4px;">
+        velari.biz@gmail.com
+      </a>
     </p>
   </footer>
 
-</div>
+</div><!-- /wrapper -->
 
 <script>
-// ─── RESPONSE DATA — real Zendino data ───────────────────────────────────────
+// ─── MENU CARD RENDERER ───────────────────────────────────────────────────────
+
+const BESTSELLERS = [
+  {
+    img: 'https://i.ibb.co/20Br06n0/zendino-food-2.png',
+    name: 'Kung Pao',
+    desc: 'Kure, sojova omacka, arasidy, jasmina ryze',
+    price: '229 Kc',
+  },
+  {
+    img: 'https://i.ibb.co/4RZMHvn1/zendino-food-1.png',
+    name: 'Pad Thai s kurecim',
+    desc: 'Ryzove nudle, tamarindova omacka, vejce, arasidy',
+    price: '229 Kc',
+  },
+  {
+    img: 'https://i.ibb.co/BMspqV0/zendino-food-3.png',
+    name: 'Pho Bo',
+    desc: 'Tradicni hovezi vyvar, ryzove nudle, bylinky',
+    price: '239 Kc',
+  },
+];
+
+// Real display names / prices (ASCII used above for JS safety; display is HTML)
+const BESTSELLERS_DISPLAY = [
+  { name: 'Kung Pao',           desc: 'Kuřecí maso, sójová omáčka, arašídy, jasmínová rýže', price: '229 Kč' },
+  { name: 'Pad Thai s kuřecím', desc: 'Rýžové nudle, tamarindová omáčka, vejce, arašídy',    price: '229 Kč' },
+  { name: 'Pho Bo',             desc: 'Tradiční hovězí vývar, rýžové nudle, bylinky',         price: '239 Kč' },
+];
+
+function renderCards() {
+  return '<div style="margin-top:8px;">' + BESTSELLERS.map((c, i) => {
+    const d = BESTSELLERS_DISPLAY[i];
+    return `<a href="https://zendino.cz" target="_blank" rel="noopener"
+        style="display:flex;align-items:center;gap:10px;
+               background:rgba(255,255,255,0.05);
+               border:1px solid rgba(210,218,39,0.15);
+               border-radius:10px;padding:8px 10px;margin-bottom:6px;
+               text-decoration:none;transition:border-color 0.15s;"
+        onmouseover="this.style.borderColor='rgba(210,218,39,0.38)'"
+        onmouseout="this.style.borderColor='rgba(210,218,39,0.15)'">
+      <img src="${c.img}"
+           style="width:44px;height:44px;border-radius:50%;object-fit:cover;
+                  flex-shrink:0;border:2px solid rgba(210,218,39,0.3);" />
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:13px;font-weight:600;color:#f0ecfa;">${d.name}</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-top:1px;
+                    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${d.desc}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;">
+        <span style="background:rgba(210,218,39,0.18);color:#D2DA27;
+                     font-size:12px;font-weight:700;padding:2px 8px;border-radius:5px;">${d.price}</span>
+        <span style="font-size:10px;color:rgba(210,218,39,0.6);">Objednat &rarr;</span>
+      </div>
+    </a>`;
+  }).join('') + '</div>';
+}
+
+// ─── RESPONSES ────────────────────────────────────────────────────────────────
 
 const RESPONSES = [
   {
     kw: ['ahoj','dobry den','dobry','zdravim','hey','hi','cau','vitejte'],
-    reply: 'Dobrý den! Jsem Dino, asistent Zendina. Zeptejte se mě na menu, alergeny, otevírací dobu, rozvoz nebo věrnostní program.'
+    reply: 'Dobr&#253; den! Jsem Dino, asistent Zendina. Mohu poradit s v&#253;b&#283;rem j&#237;dla, r&#237;ct ceny, otev&#237;rac&#237; dobu nebo pom&#225;hat s objedn&#225;vkou.'
   },
   {
-    kw: ['otevir','hodiny','zavre','otevraci','otevren','provoz'],
-    reply: 'Zendino má otevřeno každý den od 10:30 do 21:30. Rozvoz funguje ve stejných hodinách. Přijďte k nám na Nádražní 643/11, Ostrava!'
+    kw: ['doporuc','nejprodavan','co si dat','co je dobre','co bys doporucil','bestsell','co dat','co objednat','co jist'],
+    get reply() { return 'Na&#353;e t&#345;i nejpopul&#225;rn&#283;j&#353;&#237; j&#237;dla pr&#225;v&#283; te&#271;:' + renderCards(); }
   },
   {
-    kw: ['menu','jidl','co mate','nabidka','co nabizite','jist','jidelni'],
-    reply: 'Nabízíme asijskou kuchyni: Pad Thai (tofu / kuřecí / krevety / hovězí), Red Curry, Pho polévky, Shoyu Ramen, Kung Pao, Tom Kha, Gyoza knedlíčky a dezerty. Na co se chcete zeptat konkrétněji?'
+    kw: ['akce','sleva','zvyhodnen','vyhod','deal','poledni','obed','lunch','menu to share','share'],
+    reply: '<b style="color:#D2DA27;">Aktu&#225;ln&#237; nab&#237;dky:</b><br><br>'
+      + '&#x1F962; <b>Menu to Share</b> &#8212; dva hlavn&#237; chody + 2 lemon&#225;dy za zv&#253;hodn&#283;nou cenu. Ide&#225;ln&#237; pro dvojici.<br><br>'
+      + '&#x1F371; <b>Polen&#237; menu</b> &#8212; sledujte na&#353;e soci&#225;ln&#237; s&#237;t&#283; pro aktu&#225;ln&#237; denn&#237; nab&#237;dku.<br><br>'
+      + '&#x2B50; <b>DinoCoin&#253;</b> &#8212; 5&nbsp;% z ka&#382;d&#233; online objedn&#225;vky zp&#283;t jako kredit. Po registraci 50 minc&#237; zdarma!'
+  },
+  {
+    kw: ['otevir','hodiny','zavre','otevraci','otevren','provoz','kdy otevr','otevira'],
+    reply: 'Zendino m&#225; otev&#345;eno ka&#382;d&#253; den od <b style="color:#D2DA27;">10:30 do 21:30</b>. Rozvoz funguje ve stejn&#253;ch hodin&#225;ch. Naj&#271;ete n&#225;s na N&#225;dr&#382;n&#237; 643/11, Ostrava.'
+  },
+  {
+    kw: ['menu','jidl','co mate','nabidka','co nabizite','jidelni','jidelnicek'],
+    reply: 'V&#253;b&#283;r z na&#353;eho menu s cenami:<br><br>'
+      + '&#8226; Pad Thai ku&#345;ec&#237; &#8212; <b style="color:#D2DA27;">229&nbsp;K&#269;</b><br>'
+      + '&#8226; Kung Pao &#8212; <b style="color:#D2DA27;">229&nbsp;K&#269;</b><br>'
+      + '&#8226; Shoyu Ramen &#8212; <b style="color:#D2DA27;">239&nbsp;K&#269;</b><br>'
+      + '&#8226; Pho Bo &#8212; <b style="color:#D2DA27;">239&nbsp;K&#269;</b><br>'
+      + '&#8226; Red Curry ku&#345;ec&#237; &#8212; <b style="color:#D2DA27;">239&nbsp;K&#269;</b><br>'
+      + '&#8226; Bun Bo Nam Bo &#8212; <b style="color:#D2DA27;">239&nbsp;K&#269;</b><br><br>'
+      + 'Cel&#233; menu na <a href="https://zendino.cz" target="_blank" style="color:#D2DA27;">zendino.cz</a>. Chcete doporu&#269;en&#237;?'
   },
   {
     kw: ['bezlepk','gluten','lepek'],
-    reply: 'Bezlepkové volby: Pho Ga, Tom Kha Gai, Tom Kha Veggie a Jasmínová rýže. Pad Thai, Ramen a Curry lepek obsahují. Kompletní seznam alergenů je na zendino.cz.'
+    reply: 'Bezlepkov&#233; volby: <b>Pho Ga</b>, <b>Tom Kha Gai</b>, <b>Tom Kha Veggie</b> a jasmínová rýže. '
+      + 'Pad Thai, Ramen a Curry lepek obsahuj&#237;. Kompletn&#237; seznam na <a href="https://zendino.cz/seznam-alergenu/" target="_blank" style="color:#D2DA27;">zendino.cz</a>.'
   },
   {
     kw: ['arasid','orisek','peanut'],
-    reply: 'Arašídy obsahují: Pad Thai (všechny varianty), Red Curry s tofu, Bun Bo Nam Bo a Kung Pao. Bez arašídů jsou Pho polévky a Tom Kha — bezpečná volba při alergii.'
+    reply: 'Ara&#353;&#237;dy obsahuj&#237;: Pad Thai (v&#353;echny varianty), Red Curry s tofu, Bun Bo Nam Bo a Kung Pao. '
+      + 'Bez ara&#353;&#237;d&#367; jsou Pho pol&#233;vky a Tom Kha &#8212; bezpe&#269;n&#225; volba p&#345;i alergii.'
   },
   {
     kw: ['alergen','intoleranc','obsahuje','alergick'],
-    reply: 'Kompletní seznam alergenů ke každému jídlu je na zendino.cz/seznam-alergenu/. Napište název konkrétního jídla a řeknu vám alergeny.'
+    reply: 'Kompletn&#237; seznam alergen&#367; ke ka&#382;d&#233;mu j&#237;dlu je na '
+      + '<a href="https://zendino.cz/seznam-alergenu/" target="_blank" style="color:#D2DA27;">zendino.cz/seznam-alergenu/</a>. '
+      + 'Nap&#353;te n&#225;zev j&#237;dla a up&#345;esn&#237;m.'
   },
   {
     kw: ['pad thai'],
-    reply: 'Pad Thai nabízíme ve 4 variantách: s tofu, kuřecím, krevetami nebo hovězím. Obsahuje lepek, vejce, arašídy a sóju. Krevetová varianta navíc obsahuje krutýše.'
+    reply: 'Pad Thai nab&#237;z&#237;me ve 4 variant&#225;ch:<br>'
+      + '&#8226; s tofu &#8212; <b style="color:#D2DA27;">229&nbsp;K&#269;</b><br>'
+      + '&#8226; s ku&#345;ec&#237;m &#8212; <b style="color:#D2DA27;">229&nbsp;K&#269;</b><br>'
+      + '&#8226; s krevety &#8212; <b style="color:#D2DA27;">239&nbsp;K&#269;</b><br>'
+      + '&#8226; s hov&#283;z&#237;m &#8212; <b style="color:#D2DA27;">239&nbsp;K&#269;</b><br><br>'
+      + 'Obsahuje lepek, vejce, ara&#353;&#237;dy a s&#243;ju.'
   },
   {
     kw: ['pho','ramen','polevka'],
-    reply: 'Pho Ga (kuřecí) je nejlehčí volba — obsahuje pouze ryby (alerg. 4). Pho Bo navíc obsahuje lepek. Shoyu Ramen obsahuje lepek, vejce, ryby a sóju.'
+    reply: '<b>Pho Ga</b> &#8212; <b style="color:#D2DA27;">229&nbsp;K&#269;</b> &#8212; nejleh&#269;&#237; volba, jen ryby (alergen 4).<br>'
+      + '<b>Pho Bo</b> &#8212; <b style="color:#D2DA27;">239&nbsp;K&#269;</b> &#8212; tradi&#269;n&#237; hov&#283;z&#237; v&#253;var, obsahuje lepek.<br>'
+      + '<b>Shoyu Ramen</b> &#8212; <b style="color:#D2DA27;">239&nbsp;K&#269;</b> &#8212; obsahuje lepek, vejce, ryby a s&#243;ju.'
   },
   {
     kw: ['bun bo','bunbo'],
-    reply: 'Bun Bo Nam Bo jsou rýžové nudle s hovězím masem, zeleninou a bylinkami. Obsahuje lepek, ryby, arašídy a sóju. Jedno z našich nejoblíbenějších jídel!'
+    reply: 'Bun Bo Nam Bo &#8212; r&#253;&#382;ov&#233; nudle s hov&#283;z&#237;m, zeleninou a bylinkami &#8212; <b style="color:#D2DA27;">239&nbsp;K&#269;</b>. '
+      + 'Obsahuje lepek, ryby, ara&#353;&#237;dy a s&#243;ju. Jedno z nejoblíbenějších jídel!'
   },
   {
     kw: ['curry','kari','red curry'],
-    reply: 'Red Curry nabízíme s tofu nebo s kuřecím. S tofu obsahuje lepek, arašídy, sóju a sezam. Kuřecí varianta je bez arašídů — obsahuje lepek, sóju a sezam.'
+    reply: 'Red Curry:<br>'
+      + '&#8226; s ku&#345;ec&#237;m &#8212; <b style="color:#D2DA27;">239&nbsp;K&#269;</b> (bez ara&#353;&#237;d&#367;)<br>'
+      + '&#8226; s tofu &#8212; <b style="color:#D2DA27;">239&nbsp;K&#269;</b><br><br>'
+      + 'Obsahuje lepek, s&#243;ju a sezam. Varianta s tofu nav&#237;c obsahuje ara&#353;&#237;dy.'
   },
   {
     kw: ['rozvoz','donask','doruceni','doprava','dovoz','dostaveni'],
-    reply: 'Rozvoz denně 10:30–21:30. Cena dovozu 29 nebo 49 Kč podle zóny. Minimální objednávka 149 Kč. Standardní čas doručení do 30 minut. Objednat na zendino.cz.'
+    reply: 'Rozvoz denn&#283; <b>10:30&#8211;21:30</b>. Cena: <b style="color:#D2DA27;">29&nbsp;K&#269;</b> nebo '
+      + '<b style="color:#D2DA27;">49&nbsp;K&#269;</b> podle z&#243;ny. Minim&#225;ln&#237; objedn&#225;vka 149&nbsp;K&#269;. '
+      + '&#268;as doru&#269;en&#237; ~30 minut. Objedn&#225;vky na '
+      + '<a href="https://zendino.cz" target="_blank" style="color:#D2DA27;">zendino.cz</a>.'
   },
   {
     kw: ['dinocoin','dinoclub','vernost','vernacky','razitk','odmena','vernostni'],
-    reply: 'DinoCoiny: za každý online nákup dostanete zpět 5 % hodnoty (1 mince = 1 Kč). Po registraci rovnou 50 mincí zdarma. V bistru sbíráte razítka — za 9 razítek je Pad Thai s limonádou zdarma.'
+    reply: '<b style="color:#D2DA27;">DinoCoin&#253;:</b> za ka&#382;d&#253; online n&#225;kup dostanete zp&#283;t <b>5&nbsp;%</b> '
+      + '(1 mince = 1&nbsp;K&#269;). Po registraci <b>50 minc&#237; zdarma</b>. Mince plat&#237; 90 dn&#237;.<br><br>'
+      + '<b>V bistru:</b> raz&#237;tkov&#253; program &#8212; za 9 raz&#237;tek <b>Pad Thai + lemon&#225;da zdarma!</b>'
   },
   {
     kw: ['rezervac','stul','misto','sednout','rezervovat'],
-    reply: 'Pro rezervaci stolu nás kontaktujte na +420 608 864 620 nebo emailem na spokojenost@zendino.cz. Rádi vám místo připravíme.'
+    reply: 'Rezervace stolu: '
+      + '<a href="tel:+420608864620" style="color:#D2DA27;">+420&nbsp;608&nbsp;864&nbsp;620</a> nebo '
+      + '<a href="mailto:spokojenost@zendino.cz" style="color:#D2DA27;">spokojenost@zendino.cz</a>.'
   },
   {
     kw: ['adresa','kde jste','kde se nachazit','kontakt','kde','telefon','email'],
-    reply: 'Najdete nás na Nádražní 643/11, Moravská Ostrava. Tel: +420 608 864 620. Email: spokojenost@zendino.cz.'
+    reply: '<b>N&#225;dr&#382;n&#237; 643/11, Moravsk&#225; Ostrava</b><br>'
+      + 'Tel: <a href="tel:+420608864620" style="color:#D2DA27;">+420&nbsp;608&nbsp;864&nbsp;620</a><br>'
+      + 'Email: <a href="mailto:spokojenost@zendino.cz" style="color:#D2DA27;">spokojenost@zendino.cz</a>'
   },
   {
     kw: ['platit','platba','stravenk','kartou','hotovost','zaplatit','pluxee','edenred'],
-    reply: 'Platit lze online na webu, u řidiče nebo přímo v bistru. Přijímáme stravenky Pluxee, Edenred, Cheque Dejeuner a Naše stravenka, samozřejmě i kartou a hotovostí.'
+    reply: 'P&#345;ij&#237;m&#225;me stravenky <b>Pluxee, Edenred, Cheque Dejeuner</b> a <b>Na&#353;e stravenka</b>, '
+      + 'samoz&#345;ejm&#283; i kartou a hotovost&#237;. Platba online, u &#345;idi&#269;e nebo p&#345;&#237;mo v bistru.'
   },
   {
     kw: ['parkovan','zaparko','auto'],
-    reply: 'Rozvoz za 29 Kč je levnější než parkovat v centru. Nebo přijďte MHD — zastávka je kousek od bistru na Nádražní.'
+    reply: 'Rozvoz za <b style="color:#D2DA27;">29&nbsp;K&#269;</b> je levn&#283;j&#353;&#237; ne&#382; parkovat v centru. '
+      + 'Nebo p&#345;ij&#271;te MHD &#8212; zast&#225;vka je kousek od bistru na N&#225;dr&#382;n&#237;.'
   },
 ];
 
-const FALLBACK = 'Rád vám pomohu! Zeptejte se na menu, alergeny, otevírací dobu, rozvoz nebo věrnostní program DinoCoiny.';
+const FALLBACK = 'R&#225;d v&#225;m pom&#367;&#382;u! Zeptejte se na menu, ceny, alergeny, otev&#237;rac&#237; dobu, rozvoz nebo DinoCoin&#253;. Nebo klikn&#283;te na tla&#269;&#237;tko n&#237;&#382;e.';
 
 const CHIPS = [
   {
-    label: 'Otevírací doba',
+    label: 'Otev&#237;rac&#237; doba',
     icon: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D2DA27" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
-    query: 'Jaká je otevírací doba?'
+    query: 'Jak&#225; je otev&#237;rac&#237; doba?'
   },
   {
-    label: 'Menu',
+    label: 'Menu &amp; ceny',
     icon: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D2DA27" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="2" x2="8" y2="22"/><path d="M5 2v6a3 3 0 006 0V2"/><path d="M19 2v4a3 3 0 01-3 3h0v13"/></svg>`,
-    query: 'Co máte v menu?'
+    query: 'Co m&#225;te v menu?'
+  },
+  {
+    label: 'Doporu&#269;it j&#237;dlo',
+    icon: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D2DA27" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`,
+    query: 'Co byste doporu&#269;ili objednat?'
+  },
+  {
+    label: 'Nejprod&#225;van&#283;j&#353;&#237;',
+    icon: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D2DA27" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>`,
+    query: 'Jak&#225; jsou nejprod&#225;van&#283;j&#353;&#237; j&#237;dla?'
+  },
+  {
+    label: 'Akce &amp; slevy',
+    icon: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D2DA27" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>`,
+    query: 'Jak&#233; jsou aktu&#225;ln&#237; akce nebo slevy?'
   },
   {
     label: 'Alergeny',
     icon: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D2DA27" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>`,
-    query: 'Máte bezlepkové jídlo?'
+    query: 'M&#225;te bezlepkov&#233; j&#237;dlo?'
   },
   {
     label: 'Kde jste',
     icon: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D2DA27" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
-    query: 'Jaká je vaše adresa?'
+    query: 'Jak&#225; je va&#353;e adresa?'
   },
   {
     label: 'Rozvoz',
@@ -379,17 +745,17 @@ const CHIPS = [
     query: 'Jak funguje rozvoz?'
   },
   {
-    label: 'DinoCoiny',
+    label: 'DinoCoin&#253;',
     icon: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D2DA27" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>`,
-    query: 'Co jsou DinoCoiny?'
+    query: 'Co jsou DinoCoin&#253;?'
   },
 ];
 
 // ─── CHAT ENGINE ──────────────────────────────────────────────────────────────
 
-const chatBody = document.getElementById('chatBody');
-const chatInput = document.getElementById('chatInput');
-const sendBtn = document.getElementById('sendBtn');
+const chatBody      = document.getElementById('chatBody');
+const chatInput     = document.getElementById('chatInput');
+const sendBtn       = document.getElementById('sendBtn');
 const chipContainer = document.getElementById('chipContainer');
 
 function norm(text) {
@@ -399,12 +765,16 @@ function norm(text) {
 function getReply(text) {
   const t = norm(text);
   for (const r of RESPONSES) {
-    if (r.kw.some(k => t.includes(norm(k)))) return r.reply;
+    if (r.kw.some(k => t.includes(norm(k)))) {
+      return typeof r.reply === 'function' ? r.reply() : r.reply;
+    }
   }
   return FALLBACK;
 }
 
-const DINO_AVATAR = `<div style="width:28px;height:28px;background:rgba(210,218,39,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid rgba(210,218,39,0.25);flex-shrink:0;margin-top:2px;">
+const DINO_AVATAR = `<div style="width:28px;height:28px;background:rgba(210,218,39,0.15);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    border:1px solid rgba(210,218,39,0.25);flex-shrink:0;margin-top:2px;">
   <svg viewBox="0 0 24 24" fill="#D2DA27" style="width:15px;height:15px;">
     <ellipse cx="14" cy="16" rx="5.5" ry="3"/>
     <polygon points="8,14.5 10,14.5 9,7 7,7"/>
@@ -420,13 +790,17 @@ function addMessage(text, sender) {
   wrap.className = 'msg flex mb-3 ' + (sender === 'bot' ? 'justify-start' : 'justify-end');
   if (sender === 'bot') {
     wrap.innerHTML = `
-      <div class="flex items-start gap-2" style="max-width:88%;">
+      <div class="flex items-start gap-2" style="max-width:92%;">
         ${DINO_AVATAR}
-        <div style="background:rgba(82,43,121,0.3);border:1px solid rgba(210,218,39,0.15);border-radius:4px 14px 14px 14px;padding:9px 13px;font-size:13.5px;line-height:1.6;color:#f0ecfa;">${text}</div>
+        <div style="background:rgba(72,30,110,0.32);border:1px solid rgba(210,218,39,0.14);
+                    border-radius:4px 14px 14px 14px;padding:9px 13px;
+                    font-size:13.5px;line-height:1.65;color:#f0ecfa;">${text}</div>
       </div>`;
   } else {
     wrap.innerHTML = `
-      <div style="max-width:80%;background:rgba(210,218,39,0.15);border:1px solid rgba(210,218,39,0.25);border-radius:14px 4px 14px 14px;padding:9px 13px;font-size:13.5px;line-height:1.6;color:#f0ecfa;">${text}</div>`;
+      <div style="max-width:80%;background:rgba(210,218,39,0.15);
+                  border:1px solid rgba(210,218,39,0.28);border-radius:14px 4px 14px 14px;
+                  padding:9px 13px;font-size:13.5px;line-height:1.65;color:#f0ecfa;">${text}</div>`;
   }
   chatBody.appendChild(wrap);
   chatBody.scrollTop = chatBody.scrollHeight;
@@ -439,10 +813,12 @@ function showTyping() {
   wrap.innerHTML = `
     <div class="flex items-start gap-2">
       ${DINO_AVATAR}
-      <div style="background:rgba(82,43,121,0.3);border:1px solid rgba(210,218,39,0.15);border-radius:4px 14px 14px 14px;padding:10px 14px;display:flex;align-items:center;gap:3px;">
-        <span class="tdot" style="color:#D2DA27;font-size:20px;line-height:1;">•</span>
-        <span class="tdot" style="color:#D2DA27;font-size:20px;line-height:1;">•</span>
-        <span class="tdot" style="color:#D2DA27;font-size:20px;line-height:1;">•</span>
+      <div style="background:rgba(72,30,110,0.32);border:1px solid rgba(210,218,39,0.14);
+                  border-radius:4px 14px 14px 14px;padding:10px 14px;
+                  display:flex;align-items:center;gap:3px;">
+        <span class="tdot" style="color:#D2DA27;font-size:20px;line-height:1;">&#8226;</span>
+        <span class="tdot" style="color:#D2DA27;font-size:20px;line-height:1;">&#8226;</span>
+        <span class="tdot" style="color:#D2DA27;font-size:20px;line-height:1;">&#8226;</span>
       </div>
     </div>`;
   chatBody.appendChild(wrap);
@@ -475,7 +851,8 @@ CHIPS.forEach(chip => {
   btn.className = 'chip glass rounded-full flex items-center gap-1.5';
   btn.style.cssText = 'padding:5px 10px;font-size:12px;color:rgba(255,255,255,0.65);';
   btn.innerHTML = chip.icon + `<span>${chip.label}</span>`;
-  btn.addEventListener('click', () => handleSend(chip.query));
+  const q = chip.query;
+  btn.addEventListener('click', () => handleSend(q));
   chipContainer.appendChild(btn);
 });
 
@@ -483,8 +860,129 @@ sendBtn.addEventListener('click', () => handleSend(chatInput.value));
 chatInput.addEventListener('keydown', e => { if (e.key === 'Enter') handleSend(chatInput.value); });
 
 setTimeout(() => {
-  addMessage('Dobrý den! Jsem Dino, asistent Zendina. Zeptejte se mě na menu, alergeny, rezervaci nebo otevírací dobu.', 'bot');
+  addMessage('Dobr&#253; den! Jsem Dino, asistent Zendina. Mohu poradit s v&#253;b&#283;rem j&#237;dla, &#345;&#237;ct ceny, otev&#237;rac&#237; dobu nebo pom&#225;hat s objedn&#225;vkou.', 'bot');
 }, 800);
+
+// ─── TAB SWITCHING ────────────────────────────────────────────────────────────
+
+function switchTab(tab) {
+  const chatPanel  = document.getElementById('chatPanel');
+  const voicePanel = document.getElementById('voicePanel');
+  const tabChat    = document.getElementById('tabChat');
+  const tabVoice   = document.getElementById('tabVoice');
+
+  if (tab === 'chat') {
+    chatPanel.style.display  = 'flex';
+    voicePanel.style.display = 'none';
+    tabChat.classList.add('active');
+    tabVoice.classList.remove('active');
+  } else {
+    chatPanel.style.display  = 'none';
+    voicePanel.style.display = 'flex';
+    tabChat.classList.remove('active');
+    tabVoice.classList.add('active');
+  }
+}
+
+// ─── VOICE AGENT ─────────────────────────────────────────────────────────────
+
+const VOICE_SCRIPT = 'Dobrý den, volali jste do asijského bistra Zendino. Jsem Dino, váš digitální asistent. Jak vám mohu pomoci? Mohu vám říci naše otevírací doby, poradit s výběrem jídla, nebo vám pomoci s objednávkou. Náš podnik je otevřen každý den od deseti třiceti do jednadvaceti třiceti. Těšíme se na vaši návštěvu!';
+
+let transcriptInterval = null;
+
+function acceptCall() {
+  document.getElementById('callIdle').style.display     = 'none';
+  document.getElementById('callDeclined').style.display = 'none';
+  document.getElementById('callActive').style.display   = 'flex';
+
+  const transcriptEl = document.getElementById('transcript');
+  transcriptEl.textContent = '';
+
+  let charIndex = 0;
+  const totalMs   = 26000;
+  const msPerChar = Math.max(40, Math.round(totalMs / VOICE_SCRIPT.length));
+
+  transcriptInterval = setInterval(() => {
+    charIndex = Math.min(charIndex + 1, VOICE_SCRIPT.length);
+    transcriptEl.textContent = VOICE_SCRIPT.slice(0, charIndex);
+    transcriptEl.scrollTop   = transcriptEl.scrollHeight;
+    if (charIndex >= VOICE_SCRIPT.length) {
+      clearInterval(transcriptInterval);
+      stopSpeakingBars();
+      setTimeout(showPostCallChips, 600);
+    }
+  }, msPerChar);
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(VOICE_SCRIPT);
+    utter.lang  = 'cs-CZ';
+    utter.rate  = 0.92;
+    utter.pitch = 1.0;
+
+    const trySpeak = () => {
+      const voices     = window.speechSynthesis.getVoices();
+      const czechVoice = voices.find(v => v.lang === 'cs-CZ' || v.lang.startsWith('cs'));
+      if (czechVoice) utter.voice = czechVoice;
+      window.speechSynthesis.speak(utter);
+    };
+
+    if (window.speechSynthesis.getVoices().length > 0) {
+      trySpeak();
+    } else {
+      window.speechSynthesis.addEventListener('voiceschanged', trySpeak, { once: true });
+    }
+
+    utter.onend = stopSpeakingBars;
+  }
+}
+
+function stopSpeakingBars() {
+  document.querySelectorAll('.speak-bar').forEach(b => { b.style.animation = 'none'; });
+}
+
+function showPostCallChips() {
+  const container = document.getElementById('postCallChips');
+  container.style.display = 'flex';
+  [
+    { label: 'Otevírací doba', query: 'Jaká je otevírací doba?' },
+    { label: 'Menu & ceny',   query: 'Co máte v menu?'        },
+    { label: 'Rozvoz',        query: 'Jak funguje rozvoz?'    },
+  ].forEach(chip => {
+    const btn = document.createElement('button');
+    btn.className = 'chip glass rounded-full';
+    btn.style.cssText = 'padding:5px 12px;font-size:12px;color:rgba(255,255,255,0.65);cursor:pointer;';
+    btn.textContent = chip.label;
+    const q = chip.query;
+    btn.addEventListener('click', () => { switchTab('chat'); setTimeout(() => handleSend(q), 120); });
+    container.appendChild(btn);
+  });
+}
+
+function declineCall() {
+  document.getElementById('callIdle').style.display    = 'none';
+  document.getElementById('callActive').style.display  = 'none';
+  document.getElementById('callDeclined').style.display = 'flex';
+}
+
+function endCall() {
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  if (transcriptInterval) clearInterval(transcriptInterval);
+  resetCall();
+}
+
+function resetCall() {
+  document.getElementById('callIdle').style.display    = 'flex';
+  document.getElementById('callActive').style.display  = 'none';
+  document.getElementById('callDeclined').style.display = 'none';
+  document.getElementById('transcript').textContent    = '';
+
+  const postChips = document.getElementById('postCallChips');
+  postChips.style.display = 'none';
+  postChips.innerHTML     = '';
+
+  document.querySelectorAll('.speak-bar').forEach(b => { b.style.animation = ''; });
+}
 </script>
 
 </body>
